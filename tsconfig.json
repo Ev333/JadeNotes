@@ -1,0 +1,21 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+      "module": "system",
+      "moduleResolution": "node",
+      "removeComments": false,
+      "target": "ES6",
+      //"format": "register",
+      "emitDecoratorMetadata": true,
+      "experimentalDecorators": true,
+      "noImplicitAny": false,
+      "noEmitOnError": true
+
+  },
+  "exclude": [
+    "node_modules",
+    "bower_components",
+    "typings",
+    "build"
+  ]
+}

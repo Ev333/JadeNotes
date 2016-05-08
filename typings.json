@@ -1,0 +1,16 @@
+{
+  "name": "jadenotes",
+  "version": false,
+  "dependencies": {
+    "node-uuid": "registry:npm/node-uuid#1.4.0+20160224202522"
+  },
+  "ambientDependencies": {
+    "electron-json-storage": "registry:dt/electron-json-storage#0.0.0+20160324000215",
+    "es6-shim": "registry:dt/es6-shim#0.31.2+20160317120654",
+    "github-electron": "registry:dt/github-electron#0.37.4+20160412150407",
+    "nedb": "registry:dt/nedb#0.0.0+20160317120654",
+    "node": "registry:dt/node#4.0.0+20160330064709",
+    "socket.io": "registry:dt/socket.io#1.4.4+20160317120654",
+    "socket.io-client": "registry:dt/socket.io-client#1.4.4+20160317120654"
+  }
+}

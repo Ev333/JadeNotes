@@ -1,0 +1,14 @@
+
+
+#build folders
+build
+
+#common dependency directories
+bower_components
+node_modules
+jspm_packages
+typings
+
+
+#editor settings
+.vscode

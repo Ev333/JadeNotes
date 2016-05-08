@@ -1,0 +1,25 @@
+{
+  "name": "jadenotes",
+  "description": "wiki pad",
+  "main": "index.html",
+  "authors": [
+    "evan"
+  ],
+  "license": "ISC",
+  "moduleType": [],
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "tinymce": "^4.3.11",
+    "font-awesome": "^4.6.1",
+    "moment": "^2.13.0",
+    "foundation-apps": "^1.2.0"
+  }
+}
