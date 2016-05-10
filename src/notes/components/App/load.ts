@@ -12,9 +12,12 @@ import 'rxjs/add/operator/map';*/
 
 //trace.enable(Category.TRANSITION, Category.VIEWCONFIG);
 
-import {bootstrap} from '@angular/platform-browser-dynamic';
+
+import { bootstrap } from '@angular/platform-browser-dynamic';
 import { AppComponent } from './App.component'
-bootstrap(AppComponent);
+import { SettingService } from '../../services/SettingService';
+import { NotebookService } from '../../services/NotebookService';
+bootstrap(AppComponent, [SettingService, NotebookService]);
 
 /*bootstrap(UiView, [
     UIROUTER_PROVIDERS,

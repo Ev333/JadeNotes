@@ -19,19 +19,14 @@ export class SettingService {
   //private static url1 : string = 'localhost:3000/Data/GetNotebookStubs';
 
   public notebookStubs : Observable<NotebookStub[]>;
+
+
   private notebookStubObserver : Observer<NotebookStub[]>;
 
   private stubs : NotebookStub[];
 
   constructor() {
-
-
     this.notebookStubs = new Observable( observer => this.notebookStubObserver = observer ).share();
-
-    //this.notebookStubObserver = new Observer();
-
-
-
   }
 
   public load() {
@@ -40,20 +35,7 @@ export class SettingService {
     this.notebookStubObserver.next(this.stubs);
   }
 
-  /*getNotebookStubs() : Observable<NotebookStub[]> {
-
-    this.http.get(SettingService.url1)
-                .map( (res: Response) => {
-                    return res;
-                })
-                .catch( (err: any) => {
-                    return null;
-                });
-
-    return null;
-  }*/
-
-  public getStubs() : Array<NotebookStub> {
+  private getStubs() : Array<NotebookStub> {
     return [  new NotebookStub('notebook1', 'notebook1 description', 'path1'),
               new NotebookStub('notebook2', 'notebook2 description', 'path2'),
               new NotebookStub('notebook3', 'notebook3 description', 'path3') ];
@@ -64,7 +46,7 @@ export class SettingService {
   }
 
   public CreateNewNotebook( stub : NotebookStub ) {
-
+    
   }
 
   getNotebooks() {
