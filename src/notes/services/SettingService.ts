@@ -42,11 +42,11 @@ export class SettingService {
   }
 
   public AddExistingNotebook( stub : NotebookStub ) {
-
+    
   }
 
   public CreateNewNotebook( stub : NotebookStub ) {
-    
+
   }
 
   getNotebooks() {
