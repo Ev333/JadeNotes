@@ -22,13 +22,13 @@
   </div>
 </fieldset>
 
-<table id="notebookTable" *ngIf="notebooks.length > 0">
+<table id="notebookTable" >
   <tr>
     <th>Title</th>
     <th>Description</th>
     <th>Path</th>
   </tr>
-  <tr *ngFor="let nb of notebooks">
+  <tr *ngFor="let nb of notebooks | async" >
     <td>{{nb.title}}</td>
     <td>{{nb.description}}</td>
     <td>{{nb.path}}</td>

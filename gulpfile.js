@@ -19,6 +19,26 @@ gulp.task('build-scss', function() {
       .pipe(gulp.dest('build/styles'));
 });
 
+var tsGlob = [
+  'src/**/*.ts',
+  '!(node_modules/* | bower_components/* | typings/* | jspm_packages/* )'
+]
+
+var tsProject = {
+  "compilerOptions": {
+      "module": "system",
+      "moduleResolution": "node",
+      "removeComments": false,
+      "target": "ES6",
+      //"format": "register",
+      "emitDecoratorMetadata": true,
+      "experimentalDecorators": true,
+      "noImplicitAny": false,
+      "noEmitOnError": true
+
+  }
+}
+
 gulp.task('build-ts', function() {
   var tsProject = ts.createProject('tsconfig.json');
   return tsProject.src(['src/**/*.ts'])
@@ -105,3 +125,7 @@ gulp.task('build', ['build-scss', 'build-ts', 'copy-ng2-templates']); //'build-m
 gulp.task('default', ['watch']);
 
 gulp.task('copyDependencies', ['copyNpmDependencies', 'copyBowerDependencies']);
+
+
+
+//gulp.task('generate-tsconfig')

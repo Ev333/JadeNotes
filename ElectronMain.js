@@ -1,26 +1,41 @@
-'use strict';
+//'use strict';
 
 //const system = require('systemjs');
 
 const rootPath = __dirname;
 
+const system = require('systemjs');
 const electron = require('electron');
-// Module to control application life.
 const app = electron.app;
-// Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow;
+const ipc = electron.ipcMain;
+const nedb = require('nedb');
+const path = require('path');
+//const settings = require('electron-json-storage');
 
-const settings = require('electron-json-storage');
+const strNotebooks = 'notebooks';
 
-const ipcMain = electron.ipcMain;
+
+require('electron-reload')(__dirname);
+
+
+
+let settings = new nedb( { filename: path.join(__dirname, 'settings.db'), autoload:true });
+initializeSettings();
+
+/*settings.insert( { key: 'notebooks', value: []}, function(err) {
+  console.log(err);
+});
+*/
+
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
 
-console.log(__dirname);
+//console.log(__dirname);
 
-require('electron-reload')(__dirname);
+
 
 // Quit when all windows are closed.
 app.on('window-all-closed', function() {
@@ -60,71 +75,89 @@ app.on('ready', function() {
     });
 });
 
-ipcMain.on('GetNotebooksStubsAsync', function(event, arg) {
-  console.log(arg);  // prints "ping"
-  event.sender.send('asynchronous-reply', [
-    new NotebookStub('')
-  ]);
+
+ipc.on('NewNotebook', function(event, stub) {
+  console.log('received NewNotebook IPC call', stub);
+
+  addNotebook(stub, event.sender);
+
+  /*settings.set(stub.title, stub, function(error) {
+    if (error) console.log(error);
+    else console.log('successfuly added');
+  });*/
 });
 
-//system.import('./build/express-app/app.js');
-//console.log(WebApp);
-
-/*let express = require('express');
-let path = require('path');
-
-var exp = express();
-
-//import {getRouter} from './build/express-app/app.js'; //require('./build/express-app/app.js');
-console.log('about to require');
-let webApp = require('./build/express-app/app.js');
-console.log('done with require');
-//console.log(webApp);
-//console.log(webApp.JadeNotesWebApp);
-
-//console.log(wb.WebApp);
-
-let router = webApp.JadeNotesWebApp.getRouter(__dirname);
-//console.log(router);
-
-exp.use('/jadenotes', router);
-
-function startExpress() {
-  exp.listen(3000, 'localhost', function() {
-    console.log('express started');
+function getNotebooks(sender) {
+  console.log('entering getNotebooks');
+  settings.find({ 'key': 'notebooks' }, function(err, item) {
+    console.log(err, item);
+    if (err) console.log(err);
+    else {
+      if ( item.length > 0 )
+      {
+        console.log('about to send UpdatedNotebooks IPC');
+        sender.send('UpdatedNotebooks', item[0].notebooks);
+      }
+      else console.log('no notebooks to send');
+    }
   });
 }
 
-function stopExpress() {
-  console.log('express stopped');
-}*/
+ipc.on('GetNotebooks', function(event) {
+    //console.log(new Date(), 'received GetNotebooks IPC call');
 
-/*
-var renderIndex = (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
+    getNotebooks(event.sender);
+})
+
+/*ipc.on('UpdatedNotebooks', function(event, arg) {
+  console.log(arg);  // prints "ping"
+
+  var value = [];
+  settings.has(strNotebooks, function(error,hasKey) {
+    if (error) console.log(error);
+    if (hasKey) {
+      settings.get(strNotebooks, function(error, data) {
+        if (error) console.log(error);
+        else event.sender.send('UpdatedNotebooks', data);
+      });
+
+    }
+    else {
+      event.sender.send('asynchronous-reply', []);
+    }
+  });
+});*/
+
+function addNotebook(stub, sender) {
+  settings.update({ key: 'notebooks' }, { $push: { notebooks: stub } }, {},
+    function (err, numAffected, affectedDocuments) {
+      console.log(err, numAffected, affectedDocuments);
+      if (err) console.log(err);
+      else {
+        console.log(numAffected, affectedDocuments);
+        getNotebooks(sender);
+      }
+    });
 }
 
 
-exp.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
-});
 
-exp.get('/shelf', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
-});
+function initializeSettings() {
+  settings.find( { key: 'notebooks' }, function(err, doc) {
+    console.log(err, doc);
 
-exp.get('/system.config.js', function(req,res) {
-  res.sendFile(  path.join(__dirname, 'system.config.js') );
-});
+    if (err) console.log(err);
+    else if ( !doc ) {
+      console.log('no array');
+      settings.insert({ key: 'notebooks', value: [] }, {}, function(err) {
+        if (err) console.log(err);
+      });
+    }
+    //else console.log('good doc');
+  })
+}
 
-exp.use('/scripts', express.static(  path.join(__dirname, 'node_modules') ));
-exp.use('/styles', express.static(  path.join(__dirname, 'build/styles') ));
-exp.use('/build', express.static( path.join(__dirname, 'build') ));
-exp.use('/fonts', express.static( path.join(__dirname, 'fonts') ));
-
-
-
+function setupDatabase() {
 
 
-
-*/
+}

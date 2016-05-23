@@ -2,12 +2,13 @@
 
   // map tells the System loader where to look for things
   var map = {
-    "ui-router-ng2":              "node_modules/ui-router-ng2/ng2",
+    //"ui-router-ng2":              "node_modules/ui-router-ng2/ng2",
     'app':                        'app', // 'dist',
     'rxjs':                       'node_modules/rxjs',
     'angular2-in-memory-web-api': 'node_modules/angular2-in-memory-web-api',
     '@angular':                   'node_modules/@angular',
 
+    'notes': 'build/notes',
     "components": "build/notes/components",
     "services": "build/notes/services",
     "lib": "build/notes/lib"

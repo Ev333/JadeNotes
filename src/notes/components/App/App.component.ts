@@ -22,16 +22,19 @@ import {NotebookService} from '../../services/NotebookService';
 
 export class AppComponent {
 
-  private _svcSettings: SettingService;
-  private _svcNotebooks: NotebookService;
+  //private _svcSettings: SettingService;
+  //private _svcNotebooks: NotebookService;
 
-  constructor(_settingService: SettingService, _notebookService: NotebookService ) {
-    this._svcSettings = _settingService;
-    this._svcNotebooks = _notebookService;
+  constructor(private _svcSettings: SettingService, private _svcNotebooks: NotebookService ) {
+    //this._svcSettings = _settingService;
+    //this._svcNotebooks = _notebookService;
+    //this._svcSettings.initialize();
+    this._svcSettings.x = 'New Message';
+    console.log('AppComponent - Constructor - ', this._svcSettings.x)
   }
 
   ngOnInit() {
-    console.log('AppComponent: ngOnInit');
+    //console.log('AppComponent: ngOnInit');
     //this.getNotebookStubs();
   }
 }
