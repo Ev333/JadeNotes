@@ -18,26 +18,16 @@ export class SettingsManagerDesktop implements iSettingsManager {
 
   //let obs = Observer;
   public constructor() {
-    //this.notebookStubObserver = new Observer<NotebookStub[]>();
-
     this.notebooks = new Observable(
       observer => this.notebookObserver = observer ).share();
 
-    //console.log('created observable');
-    //console.log(this.notebooks);
+    this.notebooks.subscribe(
+        notebooks => console.log(notebooks),
+        error => console.log(error));
 
     ipc.on('UpdatedNotebooks', (event, data : Array<NotebookStub> ) => {
-      //console.log('Received UpdatedNOtebooks IPC');
-      //console.log(this._notebookStubObserver);
-      //console.log(this);
-
       this.notebookObserver.next(data);
-      //if ( this.notebookObserver )  this.notebookObserver.next(data);
-      //else console.log('observer not initialized');
-
     });
-
-    //this.getNotebooks();
   }
 
   public load() {
@@ -50,13 +40,10 @@ export class SettingsManagerDesktop implements iSettingsManager {
 
   addNotebook(stub: NotebookStub) {
     console.log('about to send NewNotebook IPC call');
-    //console.log(ipc);
     ipc.send('NewNotebook', stub);
   }
 
   getNotebooks() {
-    //var stubs =
-
     ipc.send('GetNotebooks', {}, function() {
       console.log('sent GetNotebooks IPC call');
     });

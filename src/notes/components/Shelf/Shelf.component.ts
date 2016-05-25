@@ -1,18 +1,16 @@
-import {Component} from '@angular/core';
-import {NgIf, NgFor, AsyncPipe} from '@angular/common';
+import {Component}                from '@angular/core';
+import {NgIf, NgFor, AsyncPipe}   from '@angular/common';
 
-import {SettingService} from '../../services/SettingService';
-//import {NotebookService} from '../services/NotebookService';
-import {Observable}         from 'rxjs/Observable';
-import {Observer}           from 'rxjs/Observer';
-import {Notebook, NotebookStub} from '../../lib/notebook';
+import {SettingService}           from '../../services/SettingService';
 
+//import {NotebookService}        from '../services/NotebookService';
+import {Observable}               from 'rxjs/Observable';
+import {Observer}                 from 'rxjs/Observer';
+import {Notebook, NotebookStub}   from '../../lib/notebook';
 
-//module Landing.component {
 @Component({
   selector: 'shelf',
-  templateUrl: './build/notes/components/Shelf/Shelf.template.html'//,
-  //providers: [SettingService]
+  templateUrl: './build/notes/components/Shelf/Shelf.template.html'
 })
 export class ShelfComponent {
 
@@ -29,42 +27,15 @@ export class ShelfComponent {
   private errorMessage: string;
 
   constructor(private svcSettings: SettingService) {
-    console.log('constructor');
-    //this.settingService = _settingService;
-    //this.notebooks = new Array<NotebookStub>();
-    //this.notebookModel = new NotebookModel();
-
-    console.log('ShelfComponent - Constructor - ', svcSettings.x);
-
-
-
-    //this.notebooks = _settingService.getNotebookStubs();
-
-
-    //this.settingService.refreshNotebooks();
+    console.log('ShelfComponent - Constructor');
   }
 
-  //ngOnInit() {
-    //console.log('ngOnInit');
-  //}
 
   ngOnInit() {
-    console.log('ngAfterViewChecked');
+    console.log('ShelfComponent: ngOnInit');
 
-    this.notebooks = this.svcSettings.mgr.notebooks;
-
-    this.notebooks.subscribe(
-      notebooks => console.log(notebooks),
-      error => console.log(error));
-
-/*    this.svcSettings.mgr.notebooks
-                     .subscribe(
-                       notebooks => this.notebooks = notebooks,
-                       error =>  console.log(error));//this.errorMessage = <any>error);
-    console.log('subscribed', this.svcSettings.mgr);
-*/
-    //this.notebooks = this.svcSettings.mgr.load();
-    this.svcSettings.mgr.load();
+    this.notebooks = this.svcSettings.notebooks;
+    this.svcSettings.RefreshNotebooks();
   }
 
   public btnCreateNotebookClick(e) {
@@ -79,8 +50,3 @@ export class ShelfComponent {
 
 
 }
-
-//class NotebookModel {
-    //public name : string;
-//}
-//}

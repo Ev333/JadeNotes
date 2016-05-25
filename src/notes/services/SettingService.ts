@@ -31,20 +31,16 @@ export class SettingService {
   public notebooks : Observable<NotebookStub[]>;
   private notebookObserver : Observer<NotebookStub[]>;
 
-  public mgr : iSettingsManager = new SettingsManagerDesktop();
+  private mgr : iSettingsManager;
 
-  public onInit() {
-    //if (!this.mgr) {
-      //this.mgr = new SettingsManagerDesktop();
-      //console.log('created SettingsManager');
-    //}
-
-/*    ipc.on('UpdatedNotebooks', (event, data : Array<NotebookStub> ) => {
-      this.notebookObserver.next(data);
-    });*/
-
-    /*this.ready = true;*/
+  constructor() {
+    this.mgr = new SettingsManagerDesktop();
+    this.notebooks = this.mgr.notebooks;
   }
+
+/*  public onInit() {
+
+  }*/
 
   public AddExistingNotebook( stub : NotebookStub ) {
   }
@@ -53,7 +49,7 @@ export class SettingService {
     this.mgr.addNotebook(stub);
   }
 
-  public refreshNotebooks() {
+  public RefreshNotebooks() {
     this.mgr.refreshNotebooks();
   }
 
