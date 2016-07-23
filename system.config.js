@@ -19,27 +19,33 @@
     //'app':                        { main: 'main.js',  defaultExtension: 'js' },
     'rxjs':                       { defaultExtension: 'js' },
     'angular2-in-memory-web-api': { defaultExtension: 'js' },
+
+    'app': { defaultExtension: 'ts' },
+
+    '@angular/common': { main: 'index.js', defaultExtension: 'js' },
+    '@angular/compiler': { main: 'index.js', defaultExtension: 'js' },
+    '@angular/core': { main: 'index.js', defaultExtension: 'js' },
+    '@angular/http': { main: 'index.js', defaultExtension: 'js' },
+    '@angular/forms': { main: 'index.js', defaultExtension: 'js' },
+    '@angular/platform-browser': { main: 'index.js', defaultExtension: 'js' },
+    '@angular/platform-browser-dynamic': { main: 'index.js', defaultExtension: 'js' },
+    '@angular/router': { main: 'index.js', defaultExtension: 'js' },
+    '@angular/testing': { main: 'index.js', defaultExtension: 'js' },
+    '@angular/upgrade': { main: 'index.js', defaultExtension: 'js' }
   };
 
-  var packageNames = [
-    '@angular/common',
-    '@angular/compiler',
-    '@angular/core',
-    '@angular/http',
-    '@angular/platform-browser',
-    '@angular/platform-browser-dynamic',
-    '@angular/router',
-    '@angular/testing',
-    '@angular/upgrade',
-  ];
+  //var packageNames = [
+
+  //];
 
   // add package entries for angular packages in the form '@angular/common': { main: 'index.js', defaultExtension: 'js' }
-  packageNames.forEach(function(pkgName) {
-    packages[pkgName] = { main: 'index.js', defaultExtension: 'js' };
-  });
+  //packageNames.forEach(function(pkgName) {
+    //packages[pkgName] = { main: 'index.js', defaultExtension: 'js' };
+  //});
 
   var config = {
     defaultJSExtensions: true,
+    transpiler: 'typescript',
     map: map,
     packages: packages
   }

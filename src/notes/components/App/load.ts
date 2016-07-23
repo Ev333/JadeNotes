@@ -17,7 +17,9 @@ import { bootstrap } from '@angular/platform-browser-dynamic';
 import { AppComponent } from './App.component'
 import { SettingService } from '../../services/SettingService';
 import { NotebookService } from '../../services/NotebookService';
-bootstrap(AppComponent, [SettingService, NotebookService]);
+import { disableDeprecatedForms, provideForms } from '@angular/forms';
+bootstrap(AppComponent, [SettingService, NotebookService,
+  disableDeprecatedForms(), provideForms()]);
 
 /*bootstrap(UiView, [
     UIROUTER_PROVIDERS,

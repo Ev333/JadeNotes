@@ -34,8 +34,12 @@ export class SettingService {
   private mgr : iSettingsManager;
 
   constructor() {
+    console.log('SettingService: constructor');
     this.mgr = new SettingsManagerDesktop();
+    //this.mgr.load();
     this.notebooks = this.mgr.notebooks;
+
+    this.mgr.refreshNotebooks();
   }
 
 /*  public onInit() {
@@ -43,13 +47,16 @@ export class SettingService {
   }*/
 
   public AddExistingNotebook( stub : NotebookStub ) {
+    console.log('SettingService: AddExistingNotebook()');
   }
 
   public CreateNewNotebook( stub : NotebookStub ) {
+    console.log('SettingService: CreateNewNotebook');
     this.mgr.addNotebook(stub);
   }
 
   public RefreshNotebooks() {
+    console.log('SettingService: RefreshNotebooks');
     this.mgr.refreshNotebooks();
   }
 

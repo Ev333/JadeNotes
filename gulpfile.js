@@ -2,7 +2,9 @@ var gulp = require('gulp'),
     sass = require('gulp-sass'),
     sourcemaps = require('gulp-sourcemaps'),
     ts = require('gulp-typescript'),
-    inject = require('gulp-inject');
+    inject = require('gulp-inject'),
+    del = require('del'),
+    jspm = require('gulp-jspm');
     //wrap = require('gulp-wrap'),
     //declare = require('gulp-declare'),
     //concat = require('gulp-concat');
@@ -126,6 +128,27 @@ gulp.task('default', ['watch']);
 
 gulp.task('copyDependencies', ['copyNpmDependencies', 'copyBowerDependencies']);
 
+gulp.task('clean', function() {
+  return del('build/**/*');
+});
+
+gulp.task('bundleApp', function() {
+  return gulp.src(['src/**/*.ts'])
+    .pipe(jspm())
+    .pipe(gulp.dest('build/app.js'));
+});
 
 
 //gulp.task('generate-tsconfig')
+
+
+gulp.task('bundle-ts', function() {
+  var tsProject = ts.createProject('tsconfig.json');
+  return tsProject.src(['src/**/*.ts'])
+    .pipe(sourcemaps.init())
+    .pipe(ts(tsProject))
+    //.pipe(uglify())
+    .pipe(jspm())
+    .pipe(sourcemaps.write())
+    .pipe(gulp.dest('build'));
+});

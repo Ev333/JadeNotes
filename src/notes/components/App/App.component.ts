@@ -11,7 +11,14 @@ import {NotebookService} from '../../services/NotebookService';
   //<ui-view>loading...</ui-view>'
   //template: '<h3>AppComponent</h3>',
   //templateUrl: './App.template.html'
-  templateUrl: './build/notes/components/App/App.template.html',
+  //templateUrl: './build/notes/components/App/App.template.html',
+  template: `
+    <header></header>
+    <main id="AppContent">
+      <shelf></shelf>
+    </main>
+    <footer></footer>
+  `,
   providers: [SettingService, NotebookService],
   directives: [ShelfComponent]
 

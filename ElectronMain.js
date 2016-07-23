@@ -3,7 +3,6 @@
 //const system = require('systemjs');
 
 const rootPath = __dirname;
-
 const system = require('systemjs');
 const electron = require('electron');
 const app = electron.app;
@@ -11,8 +10,6 @@ const BrowserWindow = electron.BrowserWindow;
 const ipc = electron.ipcMain;
 const nedb = require('nedb');
 const path = require('path');
-//const settings = require('electron-json-storage');
-
 const strNotebooks = 'notebooks';
 
 
@@ -22,11 +19,6 @@ require('electron-reload')(__dirname);
 
 let settings = new nedb( { filename: path.join(__dirname, 'settings.db'), autoload:true });
 initializeSettings();
-
-/*settings.insert( { key: 'notebooks', value: []}, function(err) {
-  console.log(err);
-});
-*/
 
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -88,9 +80,9 @@ ipc.on('NewNotebook', function(event, stub) {
 });
 
 function getNotebooks(sender) {
-  console.log('entering getNotebooks');
+  console.log('entering getNotebooks', sender.getId());
   settings.find({ 'key': 'notebooks' }, function(err, item) {
-    console.log(err, item);
+    //console.log(err, item);
     if (err) console.log(err);
     else {
       if ( item.length > 0 )
@@ -144,7 +136,7 @@ function addNotebook(stub, sender) {
 
 function initializeSettings() {
   settings.find( { key: 'notebooks' }, function(err, doc) {
-    console.log(err, doc);
+    //console.log(err, doc);
 
     if (err) console.log(err);
     else if ( !doc ) {
@@ -153,7 +145,6 @@ function initializeSettings() {
         if (err) console.log(err);
       });
     }
-    //else console.log('good doc');
   })
 }
 
