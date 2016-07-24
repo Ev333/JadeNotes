@@ -58,14 +58,14 @@ export class ShelfComponent {
   private errorMessage: string;
 
   constructor(private svcSettings: SettingService) {
-    //console.log('ShelfComponent - Constructor');
+    console.log('ShelfComponent: Constructor');
   }
 
 
   ngOnInit() {
     console.log('ShelfComponent: ngOnInit');
     this.notebooks = this.svcSettings.notebooks;
-    this.svcSettings.getNotebooks();
+    this.svcSettings.RefreshNotebooks();
   }
 
   ngDoCheck() {
@@ -75,10 +75,6 @@ export class ShelfComponent {
   ngAfterContentChecked() {
     console.log('ShelfComponent: ngAfterContentChecked()')
   }
-
-  //ngAfterViewInit() {
-    //console.log('ShelfComponent: ngAfterViewInit()');
-  //}
 
   public btnCreateNotebookClick(e) {
     this.notebookModel = new NotebookStub("", "", "");

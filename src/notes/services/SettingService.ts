@@ -9,10 +9,7 @@ import {Injectable}     from '@angular/core';
 import {Observable}     from 'rxjs/Observable';
 import {Observer}     from 'rxjs/Observer';
 
-import {iSettingsManager} from '../lib/settings/iSettingsManager';
-import {SettingsManagerDesktop} from '../lib/settings/SettingsManagerDesktop';
 //import 'rxjs/add/operator/of';
-
 //import 'rxjs/add/observable/from';
 import 'rxjs/add/operator/share';
 
@@ -26,25 +23,29 @@ export class SettingService {
 
   //public mgr : iSettingsManager;
 
-  public x : String = 'x';
 
   public notebooks : Observable<NotebookStub[]>;
   private notebookObserver : Observer<NotebookStub[]>;
 
-  private mgr : iSettingsManager;
-
   constructor() {
     console.log('SettingService: constructor');
-    this.mgr = new SettingsManagerDesktop();
-    //this.mgr.load();
-    this.notebooks = this.mgr.notebooks;
 
-    this.mgr.refreshNotebooks();
+    this.notebooks = new Observable(
+      observer => this.notebookObserver = observer
+    ).share();
+
+    this.notebooks.subscribe(
+      notebooks => console.log(notebooks),
+      error => console.log(error)
+    );
+
+    ipc.on('UpdatedNotebooks', (event, data : Array<NotebookStub> ) => {
+      //console.log(data);
+      this.notebookObserver.next(data);
+    });
   }
 
-/*  public onInit() {
-
-  }*/
+  //public onInit() {}
 
   public AddExistingNotebook( stub : NotebookStub ) {
     console.log('SettingService: AddExistingNotebook()');
@@ -52,50 +53,26 @@ export class SettingService {
 
   public CreateNewNotebook( stub : NotebookStub ) {
     console.log('SettingService: CreateNewNotebook');
-    this.mgr.addNotebook(stub);
+    ipc.send('NewNotebook', stub);
+  }
+
+  public Destroy() {
+      console.log('SettingsManagerDesktop: destroy()');
+      ipc.removeAllListeners();
   }
 
   public RefreshNotebooks() {
     console.log('SettingService: RefreshNotebooks');
-    this.mgr.refreshNotebooks();
-  }
-
-  getNotebooks() {
-    return '';
-  }
-
-  /*private extractData(res: Response) {
-    if (res.status < 200 || res.status >= 300) {
-      throw new Error('Bad response status: ' + res.status);
-    }
-    let body = res.json();
-    return body.data || { };
-  }
-
-  private handleError (error: any) {
-    // In a real world app, we might send the error to remote logging infrastructure
-    let errMsg = error.message || 'Server error';
-    console.error(errMsg); // log to console instead
-    return Observable.throw(errMsg);
-  }*/
-
-/*  private initializeElectron() {
-    ipc.on('UpdatedNotebooks', function(event, data : Array<NotebookStub> ) {
-      this.notebookObserver.next(data);
-    });
-  }*/
-
-/*  private addNotebookElectron(stub: NotebookStub) {
-    console.log('about to send NewNotebook IPC call');
-    //console.log(ipc);
-    ipc.send('NewNotebook', stub);
-  }*/
-
-/*  private getNotebooksDesktopMode() {
-    //var stubs =
     ipc.send('GetNotebooks', {}, function() {
       console.log('sent GetNotebooks IPC call');
     });
-  }*/
+  }
+
+  private getStubs() : Array<NotebookStub> {
+    console.log('SettingsManagerDesktop: getStubs()');
+    return [  new NotebookStub('notebook1', 'notebook1 description', 'path1'),
+              new NotebookStub('notebook2', 'notebook2 description', 'path2'),
+              new NotebookStub('notebook3', 'notebook3 description', 'path3') ];
+  }
 
 }
