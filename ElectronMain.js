@@ -15,8 +15,7 @@ const strNotebooks = 'notebooks';
 
 require('electron-reload')(__dirname);
 
-
-
+// setup settings database
 let settings = new nedb( { filename: path.join(__dirname, 'settings.db'), autoload:true });
 initializeSettings();
 
@@ -25,12 +24,14 @@ initializeSettings();
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
 
-//console.log(__dirname);
+
+app.on('ready', function() {
+  createWindow();
+});
 
 
-
-// Quit when all windows are closed.
 app.on('window-all-closed', function() {
+  // Quit when all windows are closed.
     // On OS X it is common for applications and their menu bar
     // to stay active until the user quits explicitly with Cmd + Q
     if (process.platform != 'darwin') {
@@ -43,28 +44,34 @@ app.on('window-all-closed', function() {
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
-app.on('ready', function() {
+
+
+function createWindow() {
     // Create the browser window.
-    //startExpress(); // start express server
+  mainWindow = new BrowserWindow({width: 900, height: 600})
 
-    mainWindow = new BrowserWindow({width: 900, height: 600});
+  // and load the index.html of the app.
+  mainWindow.loadURL(`file://${__dirname}/index.html`)
 
-    // and load the index.html of the app.
+  // Open the DevTools.
+  mainWindow.webContents.openDevTools()
 
-    //mainWindow.loadURL('index.html');
-    mainWindow.loadURL('file://' + __dirname + '/index.html');
-    //mainWindow.webContents.openDevTools();
+  // Emitted when the window is closed.
+  mainWindow.on('closed', function () {
+    // Dereference the window object, usually you would store windows
+    // in an array if your app supports multi windows, this is the time
+    // when you should delete the corresponding element.
+    mainWindow = null;
+  });
+}
 
+function removeNotebook(id, event) {
 
-    // Emitted when the window is closed.
-    mainWindow.on('closed', function() {
-        // Dereference the window object, usually you would store windows
-        // in an array if your app supports multi windows, this is the time
-        // when you should delete the corresponding element.
-        mainWindow = null;
+}
 
-
-    });
+ipc.on('RemoveNotebook', function(event, notebookId) {
+    console.log('received RemoveNotebook IPC Call', notebookId);
+    removeNotebook(notebookId, event);
 });
 
 
@@ -96,10 +103,9 @@ function getNotebooks(sender) {
 }
 
 ipc.on('GetNotebooks', function(event) {
-    //console.log(new Date(), 'received GetNotebooks IPC call');
-
+    console.log('Received GetNotebooks IPC call');
     getNotebooks(event.sender);
-})
+});
 
 /*ipc.on('UpdatedNotebooks', function(event, arg) {
   console.log(arg);  // prints "ping"
@@ -133,7 +139,6 @@ function addNotebook(stub, sender) {
 }
 
 
-
 function initializeSettings() {
   settings.find( { key: 'notebooks' }, function(err, doc) {
     //console.log(err, doc);
@@ -146,9 +151,4 @@ function initializeSettings() {
       });
     }
   })
-}
-
-function setupDatabase() {
-
-
 }

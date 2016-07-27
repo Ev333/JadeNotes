@@ -43,6 +43,8 @@ import {Notebook, NotebookStub}   from '../../lib/notebook';
         <td>{{nb.title}}</td>
         <td>{{nb.description}}</td>
         <td>{{nb.path}}</td>
+        <td><button class="fa fa-edit" title="edit"></button></td>
+        <td><button class="fa fa-trash" title="delete"></button></td>
       </tr>
     </table>
   `
@@ -66,10 +68,6 @@ export class ShelfComponent {
     console.log('ShelfComponent: ngOnInit');
     this.notebooks = this.svcSettings.notebooks;
     this.svcSettings.RefreshNotebooks();
-  }
-
-  ngDoCheck() {
-    //console.log('ShelfComponent: ngDoCheck()');
   }
 
   ngAfterContentChecked() {
