@@ -1,4 +1,4 @@
-import {NotebookStub} from '../lib/notebook';
+import {NotebookStub} from '../lib/NotebookStub';
 
 import {Injectable}     from '@angular/core';
 

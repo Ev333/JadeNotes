@@ -36,7 +36,8 @@ var tsProject = {
       "emitDecoratorMetadata": true,
       "experimentalDecorators": true,
       "noImplicitAny": false,
-      "noEmitOnError": true
+      "noEmitOnError": true,
+      ""
 
   }
 }

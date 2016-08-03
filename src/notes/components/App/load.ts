@@ -18,6 +18,9 @@ import { AppComponent } from './App.component'
 import { SettingService } from '../../services/SettingService';
 import { NotebookService } from '../../services/NotebookService';
 import { disableDeprecatedForms, provideForms } from '@angular/forms';
+import {enableProdMode} from '@angular/core';
+
+//enableProdMode();
 bootstrap(AppComponent, [SettingService, NotebookService,
   disableDeprecatedForms(), provideForms()]);
 

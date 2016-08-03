@@ -10,15 +10,3 @@ import { Note, ContentType } from './note'
 
     }
   };
-
-  export class NotebookStub {
-    public title : string;
-    public description : string;
-    public path: string;
-
-    constructor( _title : string, _desc : string, _path : string ) {
-      this.title = _title;
-      this.description = _desc;
-      this.path = _path;
-    }
-  };

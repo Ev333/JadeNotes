@@ -1,4 +1,4 @@
-import { NotebookStub } from './notebook';
+import { NotebookStub } from './NotebookStub';
 
 module ElectronHandlers {
 

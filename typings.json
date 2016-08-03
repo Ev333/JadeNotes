@@ -12,5 +12,8 @@
     "node": "registry:dt/node#4.0.0+20160330064709",
     "socket.io": "registry:dt/socket.io#1.4.4+20160317120654",
     "socket.io-client": "registry:dt/socket.io-client#1.4.4+20160317120654"
+  },
+  "globalDependencies": {
+    "nedb": "registry:dt/nedb#0.0.0+20160505185910"
   }
 }

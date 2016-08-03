@@ -1,9 +1,7 @@
-//'use strict';
-
-//const system = require('systemjs');
+'use strict';
 
 const rootPath = __dirname;
-const system = require('systemjs');
+//const system = require('systemjs');
 const electron = require('electron');
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
@@ -13,11 +11,15 @@ const path = require('path');
 const strNotebooks = 'notebooks';
 
 
-require('electron-reload')(__dirname);
+//require('electron-reload')(`${__dirname}/ElectronMain.js`, `${__dirname}/build`);
+
+console.log('loaded requirements');
 
 // setup settings database
 let settings = new nedb( { filename: path.join(__dirname, 'settings.db'), autoload:true });
-initializeSettings();
+//initSettings();
+
+console.log('loaded settings db');
 
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -26,7 +28,13 @@ let mainWindow;
 
 
 app.on('ready', function() {
-  createWindow();
+  mainWindow = new BrowserWindow({width: 900, height: 600})
+  mainWindow.loadURL(`file://${__dirname}/index.html`)
+  mainWindow.webContents.openDevTools();  // Open DevTools.
+
+  mainWindow.on('closed', function () {
+    mainWindow = null;
+  });
 });
 
 
@@ -36,61 +44,29 @@ app.on('window-all-closed', function() {
     // to stay active until the user quits explicitly with Cmd + Q
     if (process.platform != 'darwin') {
         app.quit();
-
-        //exp.close(); // kill express server
     }
 });
 
 
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-
-
-function createWindow() {
-    // Create the browser window.
-  mainWindow = new BrowserWindow({width: 900, height: 600})
-
-  // and load the index.html of the app.
-  mainWindow.loadURL(`file://${__dirname}/index.html`)
-
-  // Open the DevTools.
-  mainWindow.webContents.openDevTools()
-
-  // Emitted when the window is closed.
-  mainWindow.on('closed', function () {
-    // Dereference the window object, usually you would store windows
-    // in an array if your app supports multi windows, this is the time
-    // when you should delete the corresponding element.
-    mainWindow = null;
-  });
-}
-
-function removeNotebook(id, event) {
-
-}
-
-ipc.on('RemoveNotebook', function(event, notebookId) {
-    console.log('received RemoveNotebook IPC Call', notebookId);
-    removeNotebook(notebookId, event);
+ipc.on('NewNotebook', function(event, stub) {
+  console.log(`received NewNotebook IPC call`);
+  addNotebook(stub, event.sender);
 });
 
+ipc.on('GetNotebooks', function(event) {
+    console.log('Received GetNotebooks IPC call');
+    getNotebooks(event.sender);
+});
 
-ipc.on('NewNotebook', function(event, stub) {
-  console.log('received NewNotebook IPC call', stub);
-
-  addNotebook(stub, event.sender);
-
-  /*settings.set(stub.title, stub, function(error) {
-    if (error) console.log(error);
-    else console.log('successfuly added');
-  });*/
+ipc.on('DeleteNotebook', function(event, path) {
+  console.log('Received DeleteNotebooks IPC call');
+  deleteNotebook(path, event.sender);
 });
 
 function getNotebooks(sender) {
-  console.log('entering getNotebooks', sender.getId());
-  settings.find({ 'key': 'notebooks' }, function(err, item) {
-    //console.log(err, item);
-    if (err) console.log(err);
+  console.log('entering getNotebooks');
+  settings.find({ '_id': 'notebooks' }, function(err, item) {
+    if (err) console.log(`getNotebooks error: ${err}`);
     else {
       if ( item.length > 0 )
       {
@@ -102,53 +78,26 @@ function getNotebooks(sender) {
   });
 }
 
-ipc.on('GetNotebooks', function(event) {
-    console.log('Received GetNotebooks IPC call');
-    getNotebooks(event.sender);
-});
-
-/*ipc.on('UpdatedNotebooks', function(event, arg) {
-  console.log(arg);  // prints "ping"
-
-  var value = [];
-  settings.has(strNotebooks, function(error,hasKey) {
-    if (error) console.log(error);
-    if (hasKey) {
-      settings.get(strNotebooks, function(error, data) {
-        if (error) console.log(error);
-        else event.sender.send('UpdatedNotebooks', data);
-      });
-
-    }
-    else {
-      event.sender.send('asynchronous-reply', []);
-    }
-  });
-});*/
-
-function addNotebook(stub, sender) {
-  settings.update({ key: 'notebooks' }, { $push: { notebooks: stub } }, {},
+function deleteNotebook(path, sender) {
+  settings.update({ '_id': 'notebooks' }, { $pull: { 'notebooks': {  'path': path }  } }, {},
     function (err, numAffected, affectedDocuments) {
-      console.log(err, numAffected, affectedDocuments);
-      if (err) console.log(err);
+      //console.log(err, numAffected, affectedDocuments);
+      if (err) console.log(`deleteNotebook Error: ${err}`);
       else {
-        console.log(numAffected, affectedDocuments);
+        console.log( `deleteNotebook: ${numAffected}, ${affectedDocuments}`);
         getNotebooks(sender);
       }
     });
 }
 
-
-function initializeSettings() {
-  settings.find( { key: 'notebooks' }, function(err, doc) {
-    //console.log(err, doc);
-
-    if (err) console.log(err);
-    else if ( !doc ) {
-      console.log('no array');
-      settings.insert({ key: 'notebooks', value: [] }, {}, function(err) {
-        if (err) console.log(err);
-      });
-    }
-  })
+function addNotebook(stub, sender) {
+  settings.update({ '_id': 'notebooks' }, { $push: { notebooks: stub } }, {},
+    function (err, numAffected, affectedDocuments) {
+      //console.log(err, numAffected, affectedDocuments);
+      if (err) console.log(`addNotebook error: ${err}`);
+      else {
+        console.log(numAffected);
+        getNotebooks(sender);
+      }
+    });
 }
