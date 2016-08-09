@@ -14,9 +14,9 @@ import 'rxjs/add/operator/map';*/
 
 
 import { bootstrap } from '@angular/platform-browser-dynamic';
-import { AppComponent } from './App.component'
-import { SettingService } from '../../services/SettingService';
-import { NotebookService } from '../../services/NotebookService';
+import { AppComponent } from './components/App/App.component'
+import { SettingService } from './services/SettingService';
+import { NotebookService } from './services/NotebookService';
 import { disableDeprecatedForms, provideForms } from '@angular/forms';
 import {enableProdMode} from '@angular/core';
 

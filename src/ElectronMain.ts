@@ -7,19 +7,30 @@ const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
 const ipc = electron.ipcMain;
 const nedb = require('nedb');
-const path = require('path');
+const pth = require('path');
 const strNotebooks = 'notebooks';
+
+const configPath = __dirname;
+//const configPath = app.getPath('userData');
+
+//const tempPath = app.getPath('temp');
+
+//const DataURI = require('datauri');
 
 
 //require('electron-reload')(`${__dirname}/ElectronMain.js`, `${__dirname}/build`);
 
+app.setName('JadeNotes');
+
 console.log('loaded requirements');
 
 // setup settings database
-let settings = new nedb( { filename: path.join(__dirname, 'settings.db'), autoload:true });
-//initSettings();
 
-console.log('loaded settings db');
+var dbPath = pth.join(__dirname, 'settings.db'); //String.raw`${__dirname}\\settings.db`;
+console.log(dbPath);
+let settings : any = new nedb( { filename: dbPath, autoload:true });
+
+//console.log('loaded settings db');
 
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -29,7 +40,11 @@ let mainWindow;
 
 app.on('ready', function() {
   mainWindow = new BrowserWindow({width: 900, height: 600})
-  mainWindow.loadURL(`file://${__dirname}/index.html`)
+
+  var webroot = String.raw`file://${__dirname}/index.html`;
+  console.log(webroot);
+  mainWindow.loadURL(webroot);
+  //mainWindow.loadURL(`file://${__dirname}/index.html`)
   mainWindow.webContents.openDevTools();  // Open DevTools.
 
   mainWindow.on('closed', function () {

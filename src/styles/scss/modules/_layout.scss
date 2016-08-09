@@ -1,0 +1,88 @@
+html, body, jadenotes { min-height: 100vh; margin: 0; padding: 0; }
+
+
+body {
+  @include coreFont;
+}
+
+
+jadenotes {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+  main {
+      @include flexMain();
+      @include flexContainer(column);
+
+      border:1px solid black;
+
+      #left {
+        width: 10em;
+      }
+
+      #content {
+        flex: 1;
+      }
+
+      #right {
+        width: 3em;
+      }
+  }
+
+  header {
+    height: $headerHeight;
+    text-align:center;
+    border:1px solid black;
+  }
+
+  footer {
+    height: $footerHeight;
+    text-align:center;
+    border:1px solid black;
+  }
+}
+
+
+
+
+
+
+.cf:after {
+  content: '';
+  display: table;
+  clear: both;
+}
+
+
+
+
+
+#leftPanel {
+  width: $leftPanelWidth;
+  order: 1;
+  //display:flex;
+  //flex-basis: $leftPanelWidth; flex-shrink: 0; flex-grow:0;
+  //border:1px solid black;
+  background-color: lightgreen;
+}
+
+#centerPanel {
+  order: 2;
+  flex: 1  1  auto;
+  min-width: 30em;
+  //flex-shrink: 1;
+  flex-wrap:nowrap;
+  //margin-left: $leftPanelWidth + 1em;
+  //border:1px solid black;
+
+}
+
+#rightPanel {
+  order: 3;
+  width: $rightPanelWidth;
+  //border:1px solid black;
+  //flex-basis: $rightPanelWidth; flex-shrink: 0; flex-grow:0;
+  background-color: pink;
+  //@include border;
+}
