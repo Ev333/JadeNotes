@@ -36,7 +36,7 @@ console.log(`jnHome: ${paths.jnHome}\njnTemp: ${paths.jnTemp}\njnConfig: ${paths
 
 
 setAppPath('jnHome', paths.jnHome);
-setAppPath('jnTemp', paths.jnTemp);
+//setAppPath('jnTemp', paths.jnTemp);
 
 //require('electron-reload')(`${__dirname}/ElectronMain.js`, `${__dirname}/build`);
 
@@ -44,7 +44,9 @@ setAppPath('jnTemp', paths.jnTemp);
 
 let settings : any = new nedb( { filename: paths.jnConfig, autoload:true });
 settings.find({ '_id': 'notebooks' }, function(err, item) {
-	if (!item)  initSettingsDb(settings);
+	console.log(item);
+	if (err) console.log(err);
+	if (item.length === 0)  initSettingsDb();
 });
 
 //console.log('loaded settings db');
@@ -129,13 +131,14 @@ function addNotebook(stub, sender) {
     });
 }
 
-function initSettingsDb(db) {
+function initSettingsDb() {
+	console.log('initSettingsDb');
 	var config = {
 	  '_id': 'notebooks',
 	  'notebooks': []
 	}
 
-	db.insert(config, function(err, newDoc) {
+	settings.insert(config, function(err, newDoc) {
 	  if (err) console.log(err);
 	});
 }
