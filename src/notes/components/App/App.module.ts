@@ -4,7 +4,6 @@ import { FormsModule }   from '@angular/forms';
 
 import { AppComponent }		from './App.component';
 import { ShelfComponent } from '../Shelf/Shelf.component';
-//import { SettingService } from '../../services/SettingService';
 
 @NgModule({
   imports: [
@@ -14,7 +13,6 @@ import { ShelfComponent } from '../Shelf/Shelf.component';
   declarations: [
     AppComponent,
 		ShelfComponent
-		//SettingService
   ],
   bootstrap: [ AppComponent ]
 })
