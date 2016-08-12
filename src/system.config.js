@@ -36,10 +36,10 @@
 	  '@angular/testing': ng2Path,
 	  '@angular/upgrade': ng2Path,*/
 
-    'notes': 'notes',
-    "components": "notes/components",
-    "services": "notes/services",
-    "lib": "notes/lib"
+    //'notes': 'notes'
+    //"components": "build/notes/components",
+    //"services": "build/notes/services",
+    //"lib": "notes/lib"
   };
 
   // packages tells the System loader how to load when no filename and/or no extension
@@ -50,26 +50,17 @@
     //'rxjs':                       { defaultExtension: 'js', map: ng2Path },
     //'angular2-in-memory-web-api': { defaultExtension: 'js' },
 
-    'app': { defaultExtension: 'js' },
+    'notes': { main: 'main.js', defaultExtension: 'js' },
+
+		'rxjs': {
+			defaultExtension: 'js',
+			map: { main: './node_modules/rxjs/bundles/Rx.umd.min.js' }
+		},
 
 		'@angular': {
 			defaultExtension: 'js',
-			map: {}
+			map: {  }
 		}
-
-		//'ng2-bundle': { main: 'index.js', defaultExtension: 'js' }
-
-
-		/*'@angular/common': ng2PackageSettings,
-    '@angular/compiler': ng2PackageSettings,
-    '@angular/core': ng2PackageSettings,
-    '@angular/http': ng2PackageSettings,
-    '@angular/forms': ng2PackageSettings,
-    '@angular/platform-browser': ng2PackageSettings,
-    '@angular/platform-browser-dynamic': ng2PackageSettings,
-    '@angular/router': ng2PackageSettings,
-    '@angular/testing': ng2PackageSettings,
-    '@angular/upgrade': ng2PackageSettings*/
   };
 
 
@@ -78,8 +69,10 @@
 		//packages['@angular'].main = String.raw`${name}.umd.js`;
 		//packages['@angular'].map[name] =
 		//packages['@angular'].map[name] = String.raw`../node_modules/@angular/${name}/bundles/${name}.umd.js`;
-		packages[key] = { main: String.raw`/bundles/${name}.umd.js`, defaultExtension: 'js' };
+		packages[key] = { main: String.raw`bundles/${name}.umd.js`, defaultExtension: 'js' };
 	});
+
+
 
 	/*rxModules.forEach((name, index, array) => {
 		var key = String.raw`rxjs/${name}`;
@@ -87,16 +80,6 @@
 		packages[key] = { main: 'Rx.umd.js', defaultExtension: 'js' };
 	});*/
 
-	console.log(packages);
-
-  //var packageNames = [
-
-  //];
-
-  // add package entries for angular packages in the form '@angular/common': { main: 'index.js', defaultExtension: 'js' }
-  //packageNames.forEach(function(pkgName) {
-    //packages[pkgName] = { main: 'index.js', defaultExtension: 'js' };
-  //});
 
   var config = {
     defaultJSExtensions: true,

@@ -4,7 +4,6 @@ const gulp = require('gulp'),
     ts = require('gulp-typescript'),
     inject = require('gulp-inject'),
     del = require('del'),
-    jspm = require('gulp-jspm'),
     concat = require('gulp-concat'),
     changed = require('gulp-changed'),
 		rollup = require('rollup-stream'),
@@ -34,7 +33,7 @@ gulp.task('build-scss', function() {
 
 var tsGlob = [
   'src/**/*.ts',
-  '!(node_modules/* | bower_components/* | typings/* | jspm_packages/* )'
+  '!(node_modules/* | bower_components/* | typings/* )'
 ]
 
 var tsProject = {
@@ -198,7 +197,6 @@ gulp.task('bundle-ts', function() {
     .pipe(sourcemaps.init())
     .pipe(ts(tsProject))
     //.pipe(uglify())
-    .pipe(jspm())
     .pipe(sourcemaps.write())
     .pipe(gulp.dest('build'));
 });
