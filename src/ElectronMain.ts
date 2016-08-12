@@ -8,27 +8,44 @@ const BrowserWindow = electron.BrowserWindow;
 const ipc = electron.ipcMain;
 const nedb = require('nedb');
 const pth = require('path');
-const strNotebooks = 'notebooks';
-
-const configPath = __dirname;
-//const configPath = app.getPath('userData');
-
-//const tempPath = app.getPath('temp');
+const del = require('del');
+const fs = require('fs');
 
 //const DataURI = require('datauri');
 
 
-//require('electron-reload')(`${__dirname}/ElectronMain.js`, `${__dirname}/build`);
+const strNotebooks = 'notebooks';
+var uuid = require('node-uuid');
 
 app.setName('JadeNotes');
 
-console.log('loaded requirements');
+
+//create session id
+const sessionId = uuid.v4();
+console.log(`sessionid: ${sessionId}`)
+
+// set temp path
+const appData = app.getPath('appData');
+var paths = {
+	jnHome: `${appData}\\${app.getName()}`,
+	jnTemp: `${appData}\\${app.getName()}\\session\\${sessionId}`,
+	jnConfig: `${appData}\\${app.getName()}\\settings.db`
+}
+
+console.log(`jnHome: ${paths.jnHome}\njnTemp: ${paths.jnTemp}\njnConfig: ${paths.jnConfig}`);
+
+
+setAppPath('jnHome', paths.jnHome);
+setAppPath('jnTemp', paths.jnTemp);
+
+//require('electron-reload')(`${__dirname}/ElectronMain.js`, `${__dirname}/build`);
 
 // setup settings database
 
-var dbPath = pth.join(__dirname, 'settings.db'); //String.raw`${__dirname}\\settings.db`;
-console.log(dbPath);
-let settings : any = new nedb( { filename: dbPath, autoload:true });
+let settings : any = new nedb( { filename: paths.jnConfig, autoload:true });
+settings.find({ '_id': 'notebooks' }, function(err, item) {
+	if (!item)  initSettingsDb(settings);
+});
 
 //console.log('loaded settings db');
 
@@ -37,23 +54,18 @@ let settings : any = new nedb( { filename: dbPath, autoload:true });
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
 
-
-app.on('ready', function() {
+app.on('ready', () => {
   mainWindow = new BrowserWindow({width: 900, height: 600})
 
   var webroot = String.raw`file://${__dirname}/index.html`;
-  console.log(webroot);
   mainWindow.loadURL(webroot);
-  //mainWindow.loadURL(`file://${__dirname}/index.html`)
   mainWindow.webContents.openDevTools();  // Open DevTools.
 
   mainWindow.on('closed', function () {
     mainWindow = null;
   });
-});
-
-
-app.on('window-all-closed', function() {
+})
+.on('window-all-closed', () => {
   // Quit when all windows are closed.
     // On OS X it is common for applications and their menu bar
     // to stay active until the user quits explicitly with Cmd + Q
@@ -115,4 +127,25 @@ function addNotebook(stub, sender) {
         getNotebooks(sender);
       }
     });
+}
+
+function initSettingsDb(db) {
+	var config = {
+	  '_id': 'notebooks',
+	  'notebooks': []
+	}
+
+	db.insert(config, function(err, newDoc) {
+	  if (err) console.log(err);
+	});
+}
+
+function setAppPath(name, path) {
+		fs.exists(path, function(exists) {
+			if (!exists) {
+				fs.mkdir(path, function(err) {
+					if (err) console.log(err);
+				});
+			}
+		});
 }
