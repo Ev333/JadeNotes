@@ -1,4 +1,7 @@
 ///<reference path="../../typings/main/ambient/node/index.d.ts" />
+///<reference path="./Triple.ts" />
+
+import { Triple, TriplePackage } from './Triple';
 
 //const zip = require('adm-zip');
 const level = require('levelup');
@@ -13,23 +16,29 @@ const leveldown = require('leveldown');
 export class NotebookManager {
 
 	private homePath: string;
+	private notebookPath: string
+	private notePath: string;
+	private dbPath: string;
+	private mainDB;
+	private graphDB;
 
-	constructor( _homePath:string )
+	constructor( _homePath:string, title:string )
 	{
 		this.homePath = _homePath;
+		this.notebookPath = path.join(this.homePath, 'notebooks', title);
+		this.dbPath = path.join(this.notebookPath, 'db');
+		this.notePath = path.join(this.notebookPath, 'notes');
 	}
 
 	public createNotebook(title, callback) {
 		console.log(`createNotebook(${title})`);
-
-		var dbPath = path.join(this.homePath, 'notebooks', title, 'db');
 		console.log(this.homePath)
-		console.log(`createNotebook - dbPath: ${dbPath}`);
+		console.log(`createNotebook - dbPath: ${this.dbPath}`);
 
-		this.createWorkspace(dbPath, (err) => {
+		this.createWorkspace( err => {
 			if (err) console.log('createWorkspace error', err);
 			else {
-				this.createDB( dbPath, (err) => {
+				this.createDB( err => {
 					if (err) console.log(`createDB error`, err);
 					else {
 						console.log('db created');
@@ -41,86 +50,61 @@ export class NotebookManager {
 
 	}
 
-	private createDB(dbPath, callback) {
-		console.log('createdb: ' + dbPath);
-		var maindb = sublevel(level(dbPath));
+	private createDB(callback) {
+		console.log('createdb: ' + this.dbPath);
+		this.mainDB = sublevel(level(this.dbPath));
+		this.graphDB = graph(this.mainDB.sublevel('jn-main-graph'));
 
-		var db = graph(maindb.sublevel('jn-main-graph'));
+		var actions = {
+			put: 'put',
+			get: 'get',
+			del: 'del'
+		};
 
-		var node1 = { subject: 'jn-root' };
-		var node2 = { subject: 'hello', predicate: 'childOf', object: 'jn-root'};
+		var nodes = [
+			new TriplePackage( actions.put, null, 'jn-root', null, null ),
+			new TriplePackage( actions.put, null, 'jn-hello', 'jn-root', 'jn-childof')
+		];
 
-		// populate database with initial values
+		var ops = [];
+		nodes.forEach(  (node) => {
+			node.triple.exportLevelGraph(node.action).forEach( t => ops.push(t) ) ;
+		});
 
-		//db.put([node1, node2], function(err) {
-		//})
-
-		/*maindb.batch()
-			.put(node1)
-			.put(node2)
-			.write( (err) => {
-				if (err) callback(err);
-				else callback();
-			});*/
-	}
-
-	public loadNotebook(title, callback) {
-
-	}
-
-	private createWorkspace( path, callback )
-	{
-
-
-		fs.stat( path, (err, stats) => {
-			if (err.code === 'ENOENT')
-			{
-				//dir doesn't exist so create it
-				mkdirp(path, (err) => {
-					if (err) {
-						console.log(err);
-						callback(err);
-					}
-					else {
-						// couldn't create dir
-						callback(err);
-					}
-				});
-			}
-			else {
-				// dir already exists, send callback with error
-				var newErr = { code: 'Already Exists' }
-				callback(newErr);
-			}
+		this.mainDB.batch(ops, (err) => {
+			if (err) console.log('createdb batch error', err);
+			callback(err);
 		});
 	}
 
-
+	private createWorkspace(callback)
+	{
+		mkdirp(this.dbPath, err => {
+			if (err) console.log(err);
+			callback(err);
+		});
+	}
 
 	public open( filePath:string )
 	{
-
 	}
 
-/*	private addTriple( triple, action ) {
-		db.batch([
-			{ key: `` }
-
-	  { key: 'spo::A::C::B', value: triple, type: 'put' },
-	  { key: 'sop::A::B::C', value: triple, type: 'put' },
-	  { key: 'ops::B::C::A', value: triple, type: 'put' },
-	  { key: 'osp::B::A::C', value: triple, type: 'put' },
-	  { key: 'pso::C::A::B', value: triple, type: 'put' },
-	  { key: 'pos::C::B::A', value: triple, type: 'put' }
-], alert.bind(null, 'Batch completed!'))
-	}
-*/
-
-
-	private sync() {
-
+	public addNote() {
 	}
 
+	private dbInitialized(callback) {
+		this.graphDB.get('jn-root', (err,val) => {
+			var isInitialized = (!err && val);
+			return callback(isInitialized);
+		});
+	}
+
+	public getChildren( parentId, callback ) {
+
+		this.graphDB.get( { predicate: 'jn-childof', object: parent }, (err, val) => {
+			callback(err,val);
+		});
+	}
 }
 
 //exports = NotebookManager;

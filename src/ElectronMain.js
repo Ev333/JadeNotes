@@ -140,10 +140,13 @@ function addNotebook(stub, sender) {
       //console.log(err, numAffected, affectedDocuments);
       if (err) console.log(`addNotebook error: ${err}`);
       else {
-				var p = path.join(paths.jnHome);
-				var mgr = new NotebookManager(p);
+				var mgr = new NotebookManager(paths.jnHome, stub.title);
 				mgr.createNotebook(stub.title, (err) => {
 					if (err) console.log(err);
+					else {
+
+					}
+
 				});
 
         console.log(numAffected);
