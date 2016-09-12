@@ -67,9 +67,9 @@ export class SettingService {
     ipc.send('NewNotebook', stub);
   }
 
-  public DeleteNotebook( path : string ) {
+  public DeleteNotebook( title : string ) {
     console.log('SettingService: DeleteNotebook');
-    ipc.send('DeleteNotebook', path);
+    ipc.send('DeleteNotebook', title);
   }
 
   public Destroy() {

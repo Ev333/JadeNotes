@@ -9,13 +9,8 @@ const gulp = require('gulp'),
 		rollup = require('rollup-stream'),
 		source = require('vinyl-source-stream'),
 		buffer = require('vinyl-buffer'),
+		uglify = require('gulp-uglify'),
     mainBowerFiles = require('main-bower-files');
-    //wrap = require('gulp-wrap'),
-    //declare = require('gulp-declare'),
-
-   //gutil = require('gulp-util'),
-   //jshint = require('gulp-jshint'),
-   //uglify = require('gulp-uglify');
 
 const tsPath = 'src/**/*.ts',
   scssPath = 'src/styles/**/*.scss',
@@ -26,7 +21,6 @@ gulp.task('build-scss', function() {
     return gulp.src(scssPath, {base: 'src/styles'})
       .pipe(sourcemaps.init())
       .pipe(sass().on('error', sass.logError))
-      //.pipe(uglify())
       .pipe(sourcemaps.write())
       .pipe(gulp.dest(cssPath));
 });
@@ -34,41 +28,49 @@ gulp.task('build-scss', function() {
 var tsGlob = [
   'src/**/*.ts',
   '!(node_modules/* | bower_components/* | typings/* )'
-]
+];
 
-var tsProject = {
-  "compilerOptions": {
+var tsProjectFrontend = ts.createProject({
       "module": "system",
       "moduleResolution": "node",
       "removeComments": false,
       "target": "ES6",
-      //"format": "register",
+      "format": "register",
       "emitDecoratorMetadata": true,
       "experimentalDecorators": true,
       "noImplicitAny": false,
       "noEmitOnError": true
-  }
-}
+});
+
+var tsProjectBackend = ts.createProject({
+      "module": "commonjs",
+      "moduleResolution": "node",
+      "removeComments": false,
+      "target": "ES6",
+      "format": "register",
+      "emitDecoratorMetadata": true,
+      "experimentalDecorators": true,
+      "noImplicitAny": false,
+      "noEmitOnError": true
+});
 
 
-gulp.task('compile-ts', function() {
-  var tsProject = ts.createProject('tsconfig.json');
-  return tsProject.src(['src/**/*.ts'])
-    .pipe(changed('build'))
+gulp.task('build-ts-frontend', function() {
+  return gulp.src(['src/**/*.ts', '!src/electron-app/**/*.ts'])
     .pipe(sourcemaps.init())
-    .pipe(ts(tsProject))
+    .pipe(ts(tsProjectFrontend))
     .pipe(sourcemaps.write())
     .pipe(gulp.dest('build'));
 });
 
-gulp.task('build-ts', function() {
-  var tsProject = ts.createProject('tsconfig.json');
-  return tsProject.src(['src/**/*.ts'])
+gulp.task('build-ts-backend', function() {
+  return gulp.src(['src/electron-app/**/*.ts'])
     .pipe(sourcemaps.init())
-    .pipe(ts(tsProject))
+    .pipe(ts(tsProjectBackend))
     .pipe(sourcemaps.write())
-    .pipe(gulp.dest('build'));
+    .pipe(gulp.dest('build/electron-app'));
 });
+
 
 gulp.task('build-dts', function() {
   var tsResult = gulp.src('node_modules/nosqlite/lib/nosqlite.js')
@@ -76,18 +78,6 @@ gulp.task('build-dts', function() {
   return tsResult.dts.pipe(gulp.dest('./typings'));
 });
 
-//gulp.task('copy-ng2-templates', function() {
-  //var tsResult = gulp.src(['src/notes/components/**/*.htm', 'src/notes/components/**/*.html'])
-    //.pipe(gulp.dest('build/notes/components'));
-//});
-
-/*var proj2 = ts.createProject({
-  "compilerOptions": {
-      "module": "es6",
-      "moduleResolution": "node",
-      "target": "ES6"
-  }
-});
 
 gulp.task('build-main', function() {
   var tsProject = ts.createProject('tsconfig-ElectronMain.json');
@@ -97,16 +87,12 @@ gulp.task('build-main', function() {
     //.pipe(uglify())
     .pipe(sourcemaps.write())
     .pipe(gulp.dest('./'));
-});*/
+});
 
 gulp.task('watch', function() {
   gulp.watch([scssPath], ['build-scss'] );
-  gulp.watch([tsPath], ['compile-ts'] );
-  //gulp.watch(['src/notes/components/**/*.html', 'src/notes/components/**/*.htm'], ['copy-ng2-templates']);
+  gulp.watch([tsPath], ['build-ts-frontend', 'build-ts-backend'] );
   gulp.watch(['src/**/*.{svg,png,htm,html,js,css,otf,ttf,woff,sfd}'], ['copyfiles']);
-
-
-  //gulp.watch(['Electronmain.ts'], ['build-main']);
 });
 
 gulp.task('clear-dependencies', function(cb) {
@@ -115,17 +101,18 @@ gulp.task('clear-dependencies', function(cb) {
   return cb();
 });
 
+
+
+var npmFiles = ['levelup/lib/*.js', 'leveldown/leveldown.js',
+	'leveldown/build/Release/*.*', 'leveldown-sublevel/index.js'];
+
 gulp.task('copy-npm-dependencies', ['clear-dependencies'], function() {
-  //var npm = 'node_modules/', bower = 'bower_modules';
   return gulp.src(['node_modules/systemjs/dist/system.src.js'], {base: './node_modules'} )
     .pipe(gulp.dest('build/dependencies'));
 });
 
 gulp.task('copy-bower-dependencies', ['clear-dependencies'], function() {
 	var files = ['bower_components/{jquery,moment}/**/*.min.js'];
-
-	//'bower_components/jquery/**/*.min.js', 'bower_components/moment/**/*.min.js'];
-	//['bower_components/tinymce/**/*.{js,css,gif,eot,svg,ttf,woff}',
 	return gulp.src(files, {base: './bower_components'})
 		.pipe(gulp.dest('build/dependencies'));
 });
@@ -135,12 +122,6 @@ gulp.task('copy-fonts', ['clear-dependencies'], function() {
 	return gulp.src(files)
 		.pipe(gulp.dest('build'));
 });
-
-/*gulp.task('copy-bower-dependencies', ['clear-dependencies'], function() {
-  var files = mainBowerFiles({paths: './', ignore: ['foundation-apps']});
-  return gulp.src(files, { base: './bower_components' })
-    .pipe(gulp.dest('build/dependencies'));
-});*/
 
 gulp.task('copy-ng2', ['clear-dependencies'], function() {
   var files = ['./node_modules/es6-shim/**/*.js', './node_modules/zone.js/dist/**/*.js',
@@ -160,7 +141,7 @@ gulp.task('copy-foundation', ['clear-dependencies'], function() {
          .pipe(gulp.dest('build/dependencies/foundation'));
 });
 
-gulp.task('build', ['build-scss', 'build-ts', 'copyfiles', 'copy-dependencies']); //'build-main'
+gulp.task('build', ['build-scss', 'build-ts-frontend', 'build-ts-backend', 'copyfiles', 'copy-dependencies']); //'build-main'
 
 gulp.task('default', ['watch']);
 
@@ -173,7 +154,7 @@ gulp.task('clean', function() {
   return del('build/**/*');
 });
 
-gulp.task('bundle-app', function() {
+/*gulp.task('bundle-app', function() {
 	var tsProject = ts.createProject('tsconfig.json');
 	return rollup({
       entry: './src/notes/load.ts',
@@ -185,18 +166,4 @@ gulp.task('bundle-app', function() {
 		.pipe(ts(tsProject))
 		.pipe(sourcemaps.write())
 		.pipe(gulp.dest('build/dist/index.js'));
-});
-
-
-//gulp.task('generate-tsconfig')
-
-
-gulp.task('bundle-ts', function() {
-  var tsProject = ts.createProject('tsconfig.json');
-  return tsProject.src(['src/**/*.ts'])
-    .pipe(sourcemaps.init())
-    .pipe(ts(tsProject))
-    //.pipe(uglify())
-    .pipe(sourcemaps.write())
-    .pipe(gulp.dest('build'));
-});
+});*/

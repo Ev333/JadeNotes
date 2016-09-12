@@ -3,6 +3,7 @@
 
 	var ng2Path = '../node_modules/@angular'
 	var rxPath = '../node_modules/rxjs';
+	var admzipPath = '../node_modules/adm-zip';
 	var ngModules = ['core','common','http','forms','platform-browser','platform-browser-dynamic', 'compiler', 'router'];
 	var rxModules = ['Observable', 'Observer', 'Subject', 'observable/PromiseObservable'];
 
@@ -66,9 +67,6 @@
 
 	ngModules.forEach((name, index, array)=>{
 		var key =  String.raw`@angular/${name}`;
-		//packages['@angular'].main = String.raw`${name}.umd.js`;
-		//packages['@angular'].map[name] =
-		//packages['@angular'].map[name] = String.raw`../node_modules/@angular/${name}/bundles/${name}.umd.js`;
 		packages[key] = { main: String.raw`bundles/${name}.umd.js`, defaultExtension: 'js' };
 	});
 

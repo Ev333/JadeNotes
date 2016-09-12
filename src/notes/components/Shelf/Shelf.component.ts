@@ -1,5 +1,5 @@
-import {Component, ChangeDetectorRef}                from '@angular/core';
-import {NgIf, NgFor, AsyncPipe}   from '@angular/common';
+import {Component, ChangeDetectorRef}     from '@angular/core';
+import {NgIf, NgFor, AsyncPipe}   				from '@angular/common';
 
 
 import {SettingService}           from '../../services/SettingService';
@@ -26,9 +26,7 @@ import {NotebookStub}             from '../../lib/NotebookStub';
       <div *ngIf="createMode">
         <form class="addNotebook" (ngSubmit)='createNotebook(e)'>
           <fieldset>
-            <label for="name">Name:</label> <input type="text" [(ngModel)]="notebookModel.title" name="title" required /> <br/>
-            <label for="name">Path:</label> <input type="text" [(ngModel)]="notebookModel.path" name="path" required /> <br/>
-
+            <label for="name">Name:</label> <input type="text" [(ngModel)]="notebookModel.title" name="title" required />
             <button type="submit">Create</button>
           </fieldset>
         </form>
@@ -38,13 +36,11 @@ import {NotebookStub}             from '../../lib/NotebookStub';
     <table id="notebookTable">
       <tr>
         <th>Title</th>
-        <th>Path</th>
       </tr>
       <tr *ngFor="let nb of notebooks$ | async" >
         <td>{{nb.title}}</td>
-        <td>{{nb.path}}</td>
         <td><button type="button" class="fa fa-edit" title="edit"></button></td>
-        <td><button type="button" class="fa fa-trash" title="delete" (click)='deleteNotebook(nb.path)'></button></td>
+        <td><button type="button" class="fa fa-trash" title="delete" (click)='deleteNotebook(nb.title)'></button></td>
       </tr>
     </table>
   `
@@ -114,7 +110,7 @@ export class ShelfComponent {
   }
 
   public btnCreateNotebookClick() {
-    this.notebookModel = new NotebookStub("", "");
+    this.notebookModel = new NotebookStub("");
     this.createMode = !this.createMode;
   }
 
@@ -125,9 +121,9 @@ export class ShelfComponent {
     this.svcSettings.CreateNewNotebook( this.notebookModel );
   }
 
-  public deleteNotebook(path) {
-    console.log('deleting notebook: ' + path);
-    this.svcSettings.DeleteNotebook(path);
+  public deleteNotebook(title) {
+    console.log('deleting notebook: ' + title);
+    this.svcSettings.DeleteNotebook(title);
   }
 
 }

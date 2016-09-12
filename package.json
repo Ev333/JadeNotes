@@ -3,6 +3,9 @@
   "version": "0.0.1",
   "description": "wiki pad",
   "main": "index.html",
+  "eslintConfig": {
+    "ecmaVersion": 6
+  },
   "dependencies": {
     "@angular/common": "^2.0.0-rc.5",
     "@angular/compiler": "^2.0.0-rc.5",
@@ -13,10 +16,15 @@
     "@angular/platform-browser-dynamic": "^2.0.0-rc.5",
     "adm-zip": "^0.4.7",
     "datauri": "^1.0.4",
+    "electron-prebuilt": "^1.3.5",
     "es6-shim": "^0.35.0",
     "express": "^4.13.4",
     "express-session": "^1.13.0",
     "gulp-changed": "^1.3.1",
+    "level-sublevel": "^6.5.4",
+    "leveldown": "^1.4.6",
+    "levelgraph": "^1.3.1",
+    "mkdirp": "^0.5.1",
     "nedb": "^1.8.0",
     "node-dir": "^0.1.12",
     "node-uuid": "^1.4.7",
@@ -30,7 +38,8 @@
   },
   "devDependencies": {
     "del": "^2.2.0",
-    "electron-prebuilt": "^1.3.2",
+    "electron-prebuilt": "^1.3.5",
+    "electron-rebuild": "^1.2.1",
     "electron-reload": "^1.0.2",
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.0",
@@ -38,7 +47,9 @@
     "gulp-sass": "^2.3.2",
     "gulp-sourcemaps": "^1.6.0",
     "gulp-typescript": "^2.13.6",
+    "gulp-uglify": "^2.0.0",
     "main-bower-files": "^2.13.1",
+    "node-gyp": "^3.4.0",
     "rollup": "^0.34.1",
     "rollup-stream": "^1.11.0",
     "ui-router-ng2": "^1.0.0-beta.1",
@@ -46,9 +57,9 @@
     "vinyl-source-stream": "^1.1.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "electron build/ElectronMain.js",
-    "create-settings-db": "node init.js"
+    "rebuild": "electron-rebuild -f -w leveldown",
+		"build-leveldown": "node-gyp rebuild --directory=node_modules/leveldown --target=1.3.5 --arch=x64 --dist-url=https://atom.io/download/atom-shell",
   },
   "author": "evan",
   "license": "ISC"
