@@ -7,13 +7,13 @@
     "ecmaVersion": 6
   },
   "dependencies": {
-    "@angular/common": "^2.0.0-rc.5",
-    "@angular/compiler": "^2.0.0-rc.5",
-    "@angular/core": "^2.0.0-rc.5",
+    "@angular/common": "^2.0.0-rc.7",
+    "@angular/compiler": "^2.0.0-rc.7",
+    "@angular/core": "^2.0.0-rc.7",
     "@angular/forms": "^0.3.0",
-    "@angular/http": "^2.0.0-rc.5",
-    "@angular/platform-browser": "^2.0.0-rc.5",
-    "@angular/platform-browser-dynamic": "^2.0.0-rc.5",
+    "@angular/http": "^2.0.0-rc.7",
+    "@angular/platform-browser": "^2.0.0-rc.7",
+    "@angular/platform-browser-dynamic": "^2.0.0-rc.7",
     "adm-zip": "^0.4.7",
     "datauri": "^1.0.4",
     "electron-prebuilt": "^1.3.5",
@@ -30,7 +30,7 @@
     "node-uuid": "^1.4.7",
     "path": "^0.12.7",
     "reflect-metadata": "^0.1.3",
-    "rxjs": "^5.0.0-beta.6",
+    "rxjs": "^5.0.0-beta.12",
     "socket.io": "^1.4.5",
     "systemjs": "^0.19.27",
     "ui-router-ng2": "^1.0.0-beta.1",
@@ -59,7 +59,7 @@
   "scripts": {
     "start": "electron build/ElectronMain.js",
     "rebuild": "electron-rebuild -f -w leveldown",
-		"build-leveldown": "node-gyp rebuild --directory=node_modules/leveldown --target=1.3.5 --arch=x64 --dist-url=https://atom.io/download/atom-shell"
+    "build-leveldown": "node-gyp rebuild --directory=node_modules/leveldown --target=1.3.5 --arch=x64 --dist-url=https://atom.io/download/atom-shell"
   },
   "author": "evan",
   "license": "ISC"

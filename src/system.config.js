@@ -55,11 +55,11 @@
 
 		'rxjs': {
 			defaultExtension: 'js',
-			map: { main: './node_modules/rxjs/bundles/Rx.umd.min.js' }
+			map: { main: './node_modules/rxjs/bundles/Rx.min.js' }
 		},
 
 		'@angular': {
-			defaultExtension: 'js',
+			defaultExtension: 'umd.js',
 			map: {  }
 		}
   };
