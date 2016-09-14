@@ -1,6 +1,4 @@
 import {Component, ChangeDetectorRef}     from '@angular/core';
-import {NgIf, NgFor, AsyncPipe}   				from '@angular/common';
-
 
 import {SettingService}           from '../../services/SettingService';
 
@@ -78,29 +76,6 @@ export class ShelfComponent {
         if (!this.hasNotebooks) this.hasNotebooks = true;
       }
     );
-
-/*    this.svcSettings.notebooks$.subscribe(
-      notebooks => {
-        console.log(notebooks);
-        this.hasNotebooks = true;
-        this.cd.markForCheck();
-        //console.log('hi');
-        //console.log('hi ' + notebooks);
-      },
-      error => console.log(error)
-    );*/
-
-
-/*    this.notebooks$ = new Observable<NotebookStub[]>(
-      observer => this.svcSettings.notebookObserver = observer
-    ).share();*/
-
-/*    this.notebooks$.subscribe(
-      notebooks => {
-        console.log(notebooks)
-      },
-      error => console.log(error)
-    );*/
 
     this.svcSettings.RefreshNotebooks();
   }

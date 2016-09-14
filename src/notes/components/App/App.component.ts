@@ -15,8 +15,7 @@ import {NotebookService} from '../../services/NotebookService';
     </main>
     <footer></footer>
   `,
-  providers: [SettingService, NotebookService],
-  directives: [ShelfComponent]
+  providers: [SettingService, NotebookService]
 })
 
 export class AppComponent {
