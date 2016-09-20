@@ -10,7 +10,9 @@ const gulp = require('gulp'),
 		source = require('vinyl-source-stream'),
 		buffer = require('vinyl-buffer'),
 		uglify = require('gulp-uglify'),
-    mainBowerFiles = require('main-bower-files');
+    mainBowerFiles = require('main-bower-files')
+		rename = require('gulp-rename');
+
 
 const tsPath = 'src/**/*.ts',
   scssPath = 'src/styles/**/*.scss',
@@ -22,7 +24,10 @@ gulp.task('build-scss', function() {
       .pipe(sourcemaps.init())
       .pipe(sass().on('error', sass.logError))
       .pipe(sourcemaps.write())
-      .pipe(gulp.dest(cssPath));
+      //.pipe(gulp.dest(cssPath))
+			//.pipe(uglify())
+			//.pipe(rename({extname: '.min.css'}))
+			.pipe(gulp.dest(cssPath));
 });
 
 var tsGlob = [
@@ -60,7 +65,10 @@ gulp.task('build-ts-frontend', function() {
     .pipe(sourcemaps.init())
     .pipe(ts(tsProjectFrontend))
     .pipe(sourcemaps.write())
-    .pipe(gulp.dest('build'));
+    //.pipe(gulp.dest('build'))
+		//.pipe(uglify())
+		//.pipe(rename({extname: '.min.js'}))
+		.pipe(gulp.dest('build'));
 });
 
 gulp.task('build-ts-backend', function() {
@@ -78,17 +86,6 @@ gulp.task('build-dts', function() {
   return tsResult.dts.pipe(gulp.dest('./typings'));
 });
 
-
-gulp.task('build-main', function() {
-  var tsProject = ts.createProject('tsconfig-ElectronMain.json');
-  return tsProject.src(['ElectronMain.ts'])
-    .pipe(sourcemaps.init())
-    .pipe(ts(tsProject))
-    //.pipe(uglify())
-    .pipe(sourcemaps.write())
-    .pipe(gulp.dest('./'));
-});
-
 gulp.task('watch', function() {
   gulp.watch([scssPath], ['build-scss'] );
   gulp.watch([tsPath], ['build-ts-frontend', 'build-ts-backend'] );
@@ -97,7 +94,7 @@ gulp.task('watch', function() {
 
 gulp.task('clear-dependencies', function(cb) {
 	var success = del('build/dependencies/**/*');
-	console.log('dependencies cleared');
+	//console.log('dependencies cleared');
   return cb();
 });
 
@@ -107,7 +104,7 @@ var npmFiles = ['levelup/lib/*.js', 'leveldown/leveldown.js',
 	'leveldown/build/Release/*.*', 'leveldown-sublevel/index.js'];
 
 gulp.task('copy-npm-dependencies', ['clear-dependencies'], function() {
-  return gulp.src(['node_modules/systemjs/dist/system.src.js'], {base: './node_modules'} )
+  return gulp.src(['node_modules/systemjs/dist/**/*.js'], {base: './node_modules'} )
     .pipe(gulp.dest('build/dependencies'));
 });
 
@@ -153,17 +150,3 @@ gulp.task('copyfiles', function() {
 gulp.task('clean', function() {
   return del('build/**/*');
 });
-
-/*gulp.task('bundle-app', function() {
-	var tsProject = ts.createProject('tsconfig.json');
-	return rollup({
-      entry: './src/notes/load.ts',
-      sourceMap: true
-    })
-		.pipe(source('load.js', './src/notes'))
-		.pipe(buffer())
-		.pipe(sourcemaps.init())
-		.pipe(ts(tsProject))
-		.pipe(sourcemaps.write())
-		.pipe(gulp.dest('build/dist/index.js'));
-});*/
