@@ -65,5 +65,6 @@
     "build-leveldown": "node-gyp rebuild --directory=node_modules/leveldown --target=1.4.0 --arch=x64 --dist-url=https://atom.io/download/atom-shell"
   },
   "author": "evan",
-  "license": "ISC"
+  "license": "ISC",
+  "repository": "https://github.com/Ev333/JadeNotes.git"
 }
