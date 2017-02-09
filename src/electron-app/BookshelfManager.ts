@@ -1,16 +1,22 @@
-///<reference path="../../typings/main/ambient/node/index.d.ts" />
-///<reference path="./Triple.ts" />
-
 import { Triple, TriplePackage } from './Triple';
 
 //const zip = require('adm-zip');
-const level = require('levelup');
-const sublevel = require('level-sublevel');
-const graph = require('levelgraph');
-var fs = require('fs');
-var path = require('path');
-var mkdirp = require('mkdirp');
-const leveldown = require('leveldown');
+
+import * as level from 'levelup';
+import * as sublevel from 'level-sublevel';
+import * as graph from 'levelgraph';
+import * as fs from 'fs';
+import * as path from 'path';
+import * as mkdirp from 'mkdirp';
+import * as leveldown from 'leveldown';
+
+// const level = require('levelup');
+// const sublevel = require('level-sublevel');
+// const graph = require('levelgraph');
+// var fs = require('fs');
+// var path = require('path');
+// var mkdirp = require('mkdirp');
+// const leveldown = require('leveldown');
 
 
 export class NotebookManager {

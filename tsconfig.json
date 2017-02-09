@@ -1,16 +1,23 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-      "module": "system",
+      "module": "amd",
       "moduleResolution": "node",
       "removeComments": false,
-      "target": "ES6",
-      "format": "register",
+      "target": "ES2015",
       "emitDecoratorMetadata": true,
       "experimentalDecorators": true,
       "noImplicitAny": false,
-      "noEmitOnError": true
-
+      "noEmitOnError": true,
+      "rootDir": "./src",
+      "outDir": "./build",
+      "typeRoots": ["./typings"],
+      "baseUrl": ".",
+      "paths": {
+          "web-app": "./src/notes",
+          "electron-app": "./src/electron-app",
+          "*": "./node_modules/*"
+      }
   },
   "exclude": [
     "node_modules",

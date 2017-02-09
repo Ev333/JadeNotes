@@ -2,19 +2,20 @@ const gulp = require('gulp'),
     sass = require('gulp-sass'),
     sourcemaps = require('gulp-sourcemaps'),
     ts = require('gulp-typescript'),
-    inject = require('gulp-inject'),
-    del = require('del'),
-    concat = require('gulp-concat'),
-    changed = require('gulp-changed'),
-		rollup = require('rollup-stream'),
-		source = require('vinyl-source-stream'),
-		buffer = require('vinyl-buffer'),
-		uglify = require('gulp-uglify'),
-    mainBowerFiles = require('main-bower-files')
-		rename = require('gulp-rename');
+    del = require('del');
+    //concat = require('gulp-concat'),
+    //changed = require('gulp-changed'),
+		//uglify = require('gulp-uglify'),
+    //mainBowerFiles = require('main-bower-files'),
+    // gulpWebpack = require('gulp-webpack'),
+    // webpack = require('webpack'),
+		//rename = require('gulp-rename');
 
 
 const tsPath = 'src/**/*.ts',
+  webPath = 'src/notes/**/*.ts',
+  electronPath = 'src/electron-app/**/*.ts'
+  staticPath = 'src/**/*.{svg,png,htm,html,js,css,otf,ttf,woff,sfd}',
   scssPath = 'src/styles/**/*.scss',
 	cssPath = 'build/styles',
   destPath = 'build';
@@ -36,23 +37,31 @@ var tsGlob = [
 ];
 
 var tsProjectFrontend = ts.createProject({
-      "module": "system",
+      "declaration": false,
+      "module": "amd",
       "moduleResolution": "node",
       "removeComments": false,
       "target": "ES6",
-      "format": "register",
       "emitDecoratorMetadata": true,
       "experimentalDecorators": true,
       "noImplicitAny": false,
-      "noEmitOnError": true
+      "noEmitOnError": true,
+      "lib": ["ES6", "DOM", "DOM.Iterable", "ScriptHost"],
+      "rootDir": "./src",
+      "outDir": "./build",
+      //"typeRoots": ["./node_modules/@types"],
+      "baseUrl": ".",
+      "paths": {
+          "web-app": ["./src/notes"],
+          "electron-app": ["./src/electron-app"]
+      }
 });
 
 var tsProjectBackend = ts.createProject({
       "module": "commonjs",
       "moduleResolution": "node",
       "removeComments": false,
-      "target": "ES6",
-      "format": "register",
+      "target": "ES2015",
       "emitDecoratorMetadata": true,
       "experimentalDecorators": true,
       "noImplicitAny": false,
@@ -60,21 +69,21 @@ var tsProjectBackend = ts.createProject({
 });
 
 
-gulp.task('build-ts-frontend', function() {
-  return gulp.src(['src/**/*.ts', '!src/electron-app/**/*.ts'])
+gulp.task('build-webApp', function() {
+  return gulp.src(['src/notes/**/*.ts'])
     .pipe(sourcemaps.init())
-    .pipe(ts(tsProjectFrontend))
+    .pipe(tsProjectFrontend())
     .pipe(sourcemaps.write())
+		.pipe(gulp.dest('build/notes'));
     //.pipe(gulp.dest('build'))
 		//.pipe(uglify())
 		//.pipe(rename({extname: '.min.js'}))
-		.pipe(gulp.dest('build'));
 });
 
-gulp.task('build-ts-backend', function() {
+gulp.task('build-electronApp', function() {
   return gulp.src(['src/electron-app/**/*.ts'])
     .pipe(sourcemaps.init())
-    .pipe(ts(tsProjectBackend))
+    .pipe(tsProjectBackend())
     .pipe(sourcemaps.write())
     .pipe(gulp.dest('build/electron-app'));
 });
@@ -87,66 +96,75 @@ gulp.task('build-dts', function() {
 });
 
 gulp.task('watch', function() {
-  gulp.watch([scssPath], ['build-scss'] );
-  gulp.watch([tsPath], ['build-ts-frontend', 'build-ts-backend'] );
-  gulp.watch(['src/**/*.{svg,png,htm,html,js,css,otf,ttf,woff,sfd}'], ['copyfiles']);
+  gulp.watch([scssPath], ['build-scss'] );  
+  gulp.watch([webPath], ['build-electronApp'] );
+  gulp.watch([electronPath], ['build-webApp'] );
+  gulp.watch([staticPath], ['copyFiles']);
 });
 
 gulp.task('clear-dependencies', function(cb) {
 	var success = del('build/dependencies/**/*');
-	//console.log('dependencies cleared');
   return cb();
 });
 
 
 
-var npmFiles = ['levelup/lib/*.js', 'leveldown/leveldown.js',
-	'leveldown/build/Release/*.*', 'leveldown-sublevel/index.js'];
+var npmFiles2 = [
+  'levelup/lib/*.js', 
+  'leveldown/leveldown.js',
+	'leveldown/build/Release/*.*', 
+  'systemjs/dist/**/*.js',
+  'level-sublevel/index.js'];
 
 gulp.task('copy-npm-dependencies', ['clear-dependencies'], function() {
-  return gulp.src(['node_modules/systemjs/dist/**/*.js'], {base: './node_modules'} )
+  var files = [
+    'node_modules/{systemjs,jquery,moment,levelup,electron}/{dist,build,lib}/**/*.js',
+    'node_modules/electron/**/*.js',
+    'node_modules/es6-shim/**/*.js',
+    'node_modules/zone.js/dist/**/*.js',
+    'node_modules/rxjs/**/*.js',
+    'node_modules/reflect-metadata/**/*.js',
+    'node_modules/@angular/**/*.umd.js',    
+    'node_modules/ui-router-core/**/*.js',
+    'node_modules/ui-router-ng2/_bundles/**/*.js',
+    'node_modules/{foundation-apps,font-awesome}/**/*.{svg,png,htm,html,js,css,otf,ttf,woff,sfd}',
+    '!(**/src/**)'
+  ];
+  return gulp.src(files, {base: './node_modules'} )
     .pipe(gulp.dest('build/dependencies'));
 });
 
-gulp.task('copy-bower-dependencies', ['clear-dependencies'], function() {
-	var files = ['bower_components/{jquery,moment}/**/*.min.js'];
-	return gulp.src(files, {base: './bower_components'})
-		.pipe(gulp.dest('build/dependencies'));
-});
 
-gulp.task('copy-fonts', ['clear-dependencies'], function() {
-	var files = ['bower_components/font-awesome/**/*.{eot,svg,ttf,woff,woff2,otf}'];
-	return gulp.src(files)
-		.pipe(gulp.dest('build'));
-});
+gulp.task('copy-dependencies', ['clear-dependencies', 'copy-npm-dependencies']);
 
-gulp.task('copy-ng2', ['clear-dependencies'], function() {
-  var files = ['./node_modules/es6-shim/**/*.js', './node_modules/zone.js/dist/**/*.js',
-		'./node_modules/rxjs/**/*.js', './node_modules/reflect-metadata/**/*.js',
-		'./node_modules/@angular/**/*.umd.js', '!(**/src/**)'
-	];
-  return gulp.src(files, {base: './node_modules'})
-    //.pipe(concat('index.js'))
-    .pipe(gulp.dest('build/dependencies'));
-});
+gulp.task('build', ['clean', 'build-all']);
 
-gulp.task('copy-dependencies', ['clear-dependencies', 'copy-npm-dependencies',
-	'copy-bower-dependencies', 'copy-ng2', 'copy-foundation', 'copy-fonts']);
-
-gulp.task('copy-foundation', ['clear-dependencies'], function() {
-  return gulp.src(['bower_components/foundation-apps/**/*.{svg}'])
-         .pipe(gulp.dest('build/dependencies/foundation'));
-});
-
-gulp.task('build', ['build-scss', 'build-ts-frontend', 'build-ts-backend', 'copyfiles', 'copy-dependencies']); //'build-main'
+gulp.task('build', ['build-scss', 'build-webApp', 'build-electronApp', 'copy-dependencies', 'copyFiles']); //'build-main'
 
 gulp.task('default', ['watch']);
 
-gulp.task('copyfiles', function() {
-    gulp.src('src/**/*.{svg,png,htm,html,js,css,otf,ttf,woff,sfd}')
+gulp.task('copyFiles', function() {
+    gulp.src(staticPath)
     .pipe(gulp.dest('build'));
 });
 
 gulp.task('clean', function() {
   return del('build/**/*');
 });
+
+
+// gulp.task('webpack-webapp', function() {
+//   var entryFile = './src/notes/main.ts';
+//   var outputFileName = 'build/notes.js'
+//   return gulp.src('./src/notes/main.ts')
+//     .pipe( gulpWebpack(require('./webpack-config-webapp.js'), webpack))
+//     .pipe(gulp.dest('build/'));
+// });
+
+// gulp.task('webpack-electron', function() {
+//   var entryFile = 'src/ElectronMain.js';
+//   var outputFileName = 'build/electron-app.js'
+//   return gulp.src('./src/notes/main.ts')
+//     .pipe( gulpWebpack(require('webpack-config-electron.js'), webpack))
+//     .pipe(gulp.dest('build/'));
+// });

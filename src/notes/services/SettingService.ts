@@ -38,21 +38,19 @@ export class SettingService {
         return data;
       });
 
-/*    this.notebooks$.subscribe(
-      notebooks => {
-        //console.log(notebooks)
-      },
+    this.notebooks$.subscribe(
+      notebooks => console.log('initial subscription'),
       error => console.log(error)
-    );*/
+    );
 
     ipc.on('UpdatedNotebooks', (event, data : Array<NotebookStub> ) => {
       console.log(`SettingService - UpdateNotebooks`);
       //this.notebooks = data;
-      this.zone.run(() => {
+      //this.zone.run(() => {
         //ng has no native awareness of electron Ipcs, so we have to
         //run this code in a zone
         this.notebookObserver.next(data);
-      });
+      //});
     });
   }
 

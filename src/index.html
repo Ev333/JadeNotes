@@ -1,39 +1,27 @@
 <!doctype html>
 <html>
   <head>
-    <!--<base href="/">-->
-
+     
+    <!--<base href="." />-->
     <link rel="stylesheet" type="text/css" href="styles/style.css" />
 
-		<script src="dependencies/es6-shim/es6-shim.min.js"></script>
+		<!--<script src="dependencies/es6-shim/es6-shim.js"></script>-->
     <script src="dependencies/systemjs/dist/system-polyfills.js"></script>
     <script src="dependencies/systemjs/dist/system.src.js"></script>
-
-    <!--<script src="dependencies/ng2-bundle/index.js"></script>-->
-
-
-
-    <script src="../node_modules/rxjs/bundles/Rx.min.js"></script>
-    <script src="../node_modules/zone.js/dist/zone.js"></script>
-    <script src="../node_modules/reflect-metadata/Reflect.js"></script>
+    <script src="dependencies/rxjs/bundles/Rx.min.js"></script>
+    <script src="dependencies/zone.js/dist/zone.js"></script>
+    <script src="dependencies/reflect-metadata/Reflect.js"></script>
     <script src="system.config.js"></script>
-
-<!--		<script src="../node_modules/@angular/core/bundles/core.umd.js"></script>
-		<script src="../node_modules/@angular/common/bundles/common.umd.js"></script>
-		<script src="../node_modules/@angular/forms/bundles/forms.umd.js"></script>
-		<script src="../node_modules/@angular/http/bundles/http.umd.js"></script>
-		<script src="../node_modules/@angular/platform-browser/bundles/platform-browser.umd.js"></script>
-		<script src="../node_modules/@angular/platform-browser-dynamic/bundles/platform-browser-dynamic.umd.js"></script>
-		<script src="../node_modules/@angular/compiler/bundles/compiler.umd.js"></script>-->
 
     <script>
       System.import('notes')
         .then(null, console.error.bind(console));
     </script>
+  
   </head>
 
   <body>
-    <JadeNotes></JadeNotes>
+    <notes></notes>
   </body>
 
 </html>

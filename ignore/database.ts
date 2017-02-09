@@ -6,6 +6,7 @@ import { Note, ContentType } from './note'
 
 //var nosqlite : any = require('nosqlite');
 
+import * as nosqlite from 'nosqlite';
 
   export class DbManager {
 
@@ -13,7 +14,7 @@ import { Note, ContentType } from './note'
       private db : any;
 
       constructor(dbPath : string, name : string, create : boolean) {
-        this.connection = new(require('nosqlite').Connection)(dbPath);
+        this.connection = new(nosqlite.Connection)(dbPath);
         this.db = this.connection.database(name);
 
         if (!this.db.existsSync() ) {

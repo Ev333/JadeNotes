@@ -1,14 +1,13 @@
-import {Component, ChangeDetectorRef}     from '@angular/core';
+import {Component, ChangeDetectorRef, OnInit}     from '@angular/core';
 
-import {SettingService}           from '../../services/SettingService';
+import {SettingService}           from '../services/SettingService';
 
 import {Observable}               from 'rxjs/Observable';
 import {Observer}                 from 'rxjs/Observer';
-//import {Subject}                 from 'rxjs/Subject';
 import 'rxjs/add/operator/map';
 
-import {Notebook}                 from '../../lib/notebook';
-import {NotebookStub}             from '../../lib/NotebookStub';
+import {Notebook}                 from '../lib/notebook';
+import {NotebookStub}             from '../lib/NotebookStub';
 
 @Component({
   selector: 'shelf',
@@ -25,6 +24,7 @@ import {NotebookStub}             from '../../lib/NotebookStub';
         <form class="addNotebook" (ngSubmit)='createNotebook(e)'>
           <fieldset>
             <label for="name">Name:</label> <input type="text" [(ngModel)]="notebookModel.title" name="title" required />
+            <label for="path">Path:</label> <input type="text" [(ngModel)]="notebookModel.path" name="path" required />
             <button type="submit">Create</button>
           </fieldset>
         </form>
@@ -35,19 +35,20 @@ import {NotebookStub}             from '../../lib/NotebookStub';
       <tr>
         <th>Title</th>
       </tr>
-      <tr *ngFor="let nb of notebooks$ | async" >
-        <td>{{nb.title}}</td>
+      <tr *ngFor="let nb of notebooks$ | async">
+        <td>
+          <a uiSref="notebookHome" [uiParams]="{id: nb.id}">{{nb.title}}</a><br/>
+          <span>{{nb.path}}</span>        
+        </td>
         <td><button type="button" class="fa fa-edit" title="edit"></button></td>
         <td><button type="button" class="fa fa-trash" title="delete" (click)='deleteNotebook(nb.title)'></button></td>
       </tr>
     </table>
   `
 })
-export class ShelfComponent {
+export class ShelfComponent implements OnInit {
 
-  //public notebookObserver : Observer<NotebookStub[]>;
   public notebooks$ : Observable<NotebookStub[]>;
-  //public notebooks$ : Subject<NotebookStub[]>;
 
   //model for creating new notebooks
   public createMode : boolean = false;
@@ -85,7 +86,7 @@ export class ShelfComponent {
   }
 
   public btnCreateNotebookClick() {
-    this.notebookModel = new NotebookStub("");
+    this.notebookModel = new NotebookStub("", null, "");
     this.createMode = !this.createMode;
   }
 

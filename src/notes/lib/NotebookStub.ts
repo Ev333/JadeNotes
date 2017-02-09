@@ -1,11 +1,15 @@
 export class NotebookStub {
   public title : string;
+  public id : string;
+  public path : string;
 
-  constructor( _title : string ) {
-    this.title = _title;
+  constructor( title : string,  id : string, path : string ) {    
+    this.title = title;
+    this.id = (id) ? id : null;
+    this.path = (path) ? path : null;
   }
 
   public isValid() {
-    return (this.title);
+    return (this.title && this.path);
   }
 };

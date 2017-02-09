@@ -18,6 +18,14 @@ export class Triple {
 	public object : string = '';
 	public predicate : string = '';
 
+	public static nodes : any = {
+		'root': 'jn-root',
+	}
+
+	public static predicates : any = {
+		'childof': 'jn-childof'
+	}
+
 	public static actions = {
 		put: 'put',
 		get: 'get',

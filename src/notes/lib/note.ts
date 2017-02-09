@@ -1,7 +1,5 @@
-///<reference path="../../../typings/main/ambient/node/index.d.ts" />
-///<reference path="../../../typings/main/definitions/node-uuid/index.d.ts" />
-
-var uuid = require('node-uuid');
+import * as uuid from 'node-uuid';
+//var uuid = require('node-uuid');
 
 export enum ContentType { Text, HTML };
 

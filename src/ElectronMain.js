@@ -11,12 +11,16 @@ var 	System = require('systemjs'),
 			fs = require('fs'),
 			uuid = require('node-uuid'),
 			//level = require('levelup'),
-			mkdirp = require('mkdirp');
+			mkdirp = require('mkdirp'),
+			fsx = require('fs-extra');
 
-var n = require('./electron-app/NotebookManager.js');
-var NotebookManager = n.NotebookManager;
-console.log(NotebookManager);
+var n = require('./electron-app/BookshelfManager.js');
+var BookshelfManager = n.BookshelfManager;
 
+
+//require('electron-reload')(__dirname);
+
+//console.log(BookshelfManager);
 
 const rootPath = __dirname,
 						strNotebooks = 'notebooks';
@@ -31,9 +35,9 @@ let mainWindow, appData, paths, settings;
 
 start();
 
-//var n = require('./electron-app/file-format/NotebookManager.js');
-//console.log(n, n.NotebookManager);
-//import { NotebookManager } from 'electron-app/file-format/NotebookManager';
+//var n = require('./electron-app/file-format/BookshelfManager.js');
+//console.log(n, n.BookshelfManager);
+//import { BookshelfManager } from 'electron-app/file-format/BookshelfManager';
 
 function start() {
 
@@ -53,22 +57,18 @@ function start() {
 		jnConfig: path.join(appData, app.getName(), 'settings.db')
 	}
 
-		//console.log(`jnHome: ${paths.jnHome}\njnTemp: ${paths.jnTemp}\njnConfig: ${paths.jnConfig}`);
+	//require('electron-reload')(`${__dirname}/ElectronMain.js`, `${__dirname}/build`);
+	setAppPath('jnHome', paths.jnHome);
 
-		//require('electron-reload')(`${__dirname}/ElectronMain.js`, `${__dirname}/build`);
+	// setup settings database
+	settings = new nedb( { filename: paths.jnConfig, autoload:true });
+	settings.find({ '_id': 'notebooks' }, function(err, item) {
+		console.log(item);
+		if (err) console.log(err);
+		if (item.length === 0)  initSettingsDb();
+	});
 
-
-		setAppPath('jnHome', paths.jnHome);
-
-		// setup settings database
-		settings = new nedb( { filename: paths.jnConfig, autoload:true });
-		settings.find({ '_id': 'notebooks' }, function(err, item) {
-			console.log(item);
-			if (err) console.log(err);
-			if (item.length === 0)  initSettingsDb();
-		});
-
-		app.on('ready', () => {
+	app.on('ready', () => {
 		  mainWindow = new BrowserWindow({width: 900, height: 600})
 
 		  var webroot = String.raw`file://${__dirname}/index.html`;
@@ -123,15 +123,22 @@ function getNotebooks(sender) {
 
 function deleteNotebook(title, sender) {
 	console.log(title);
-  settings.update({ '_id': 'notebooks' }, { $pull: { 'notebooks': {  'title': title }  } }, {},
-    function (err, numAffected, affectedDocuments) {
-      //console.log(err, numAffected, affectedDocuments);
-      if (err) console.log(`deleteNotebook Error: ${err}`);
-      else {
-        console.log( `deleteNotebook: ${numAffected}, ${affectedDocuments}`);
-        getNotebooks(sender);
-      }
-    });
+	var mgr = new BookshelfManager(title,paths);
+
+
+	settings.update({ '_id': 'notebooks' }, { $pull: { 'notebooks': {  'title': title }  } }, {},
+		 (err, numAffected, affectedDocuments) => {
+			 mgr.deleteNotebook(err => {
+				 console.log('delete physical notebook', err);
+			 });
+
+			//console.log(err, numAffected, affectedDocuments);
+			if (err) console.log(`deleteNotebook Error: ${err}`);
+			else {
+				console.log( `deleteNotebook: ${numAffected}, ${affectedDocuments}`);
+				getNotebooks(sender);
+			}
+		});
 }
 
 function addNotebook(stub, sender) {
@@ -140,8 +147,9 @@ function addNotebook(stub, sender) {
       //console.log(err, numAffected, affectedDocuments);
       if (err) console.log(`addNotebook error: ${err}`);
       else {
-				var mgr = new NotebookManager(paths.jnHome, stub.title);
-				mgr.createNotebook(stub.title, (err) => {
+				var mgr = new BookshelfManager(stub.title, paths);
+				console.log('bookshelf manager created');
+				mgr.createNotebook((err) => {
 					if (err) console.log(err);
 					else {
 
