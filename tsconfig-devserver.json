@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+      "declaration": false,
+      "module": "commonjs",
+      "moduleResolution": "node",
+      "removeComments": false,
+      "target": "ES2017",
+      "emitDecoratorMetadata": true,
+      "experimentalDecorators": true,
+      "noImplicitAny": false,
+      "noEmitOnError": true
+  },
+  "exclude": [
+    "node_modules",
+    "bower_components",
+    "typings",
+    "build"
+  ]
+}
