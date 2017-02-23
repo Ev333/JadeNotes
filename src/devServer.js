@@ -1,23 +1,21 @@
-var express = require('express'),
-    router = express.Router();
-
-
-var browserSync = require('browser-sync');
-var devServerCore = require('./build/devserver/DevServerCore.js');
-
-var dsCore = new DevServerCore();
+var express = require('express');
 
 var server = express();
+
+var browserSync = require('browser-sync');
+var DevServerCoreModule = require('./devserver/DevServerCore');
+
+var dsCore = new DevServerCoreModule.DevServerCore();
+
+
 server.use(express.static('build/notes'));
 server.use(express.static('build/dependencies'));
+server.use(dsCore.getRouter());
 
-var bsConfig = require('./bs-config.js');
+server.listen({port:3333});
+console.log('listening on port 3333');
 
-bsConfig.middleware = [
-    { route: '/', handle: middleware.home },
-    { route: '/notebooks/get', handle: middleware.getNotebooks }
-];
-
+var bsConfig = require('../bs-config.js');
 browserSync.init(bsConfig);
 
 // browserSync.init({

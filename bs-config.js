@@ -13,19 +13,19 @@
  |
  */
 module.exports = {
-    "ui": {
-        "port": 3001,
-        "weinre": {
-            "port": 8080
-        }
-    },
-    "files": false,
-    "watchOptions": {},
+    // "ui": {
+    //     "port": 3001,
+    //     "weinre": {
+    //         "port": 8080
+    //     }
+    // },
+    "files": ['build/devserver.js', 'build/devserver/**/*.js'],
+    "watchOptions": {ignoreInitial:true},
     "server": false,
-    "proxy": false,
+    "proxy": true,
     "port": 3333,
     "middleware": false,
-    "serveStatic": [],
+    //"serveStatic": [],
     "ghostMode": {
         "clicks": true,
         "scroll": true,

@@ -12,6 +12,7 @@ var webPath = ['./src/notes/**/*.ts'],
   scssPath = ['src/styles/**/*.scss'],
 	cssPath = ['build/styles'],  
   destPath = 'build',
+  libPath = ['src/lib/**/*.ts'],
   npmPaths = [
     'node_modules/{jquery,moment,levelup,electron}/{dist,build,lib}/**/*.js',
     'node_modules/systemjs/dist/system.js',
@@ -29,7 +30,7 @@ var webPath = ['./src/notes/**/*.ts'],
 
 var tsProjectWebApp = ts.createProject("tsconfig-webapp.json");
 var tsProjectDevServer = ts.createProject("tsconfig-devserver.json");
-
+var tsProjectLib = ts.createProject("tsconfig-lib.json");
 
 var compileSCSS = function() {
     return gulp.src(scssPath, {base: 'src/styles'})
@@ -38,6 +39,14 @@ var compileSCSS = function() {
       .pipe(sourcemaps.write())
 			.pipe(gulp.dest('build/styles'));
 };
+
+var compileLib = function() {
+  return gulp.src(libPath)
+    .pipe(sourcemaps.init())
+    .pipe(tsProjectLib())
+    .pipe(sourcemaps.write())
+    .pipe(gulp.dest('build/lib'));
+}
 
 var compileWebApp = function() {
   return gulp.src(webPath)
@@ -61,16 +70,18 @@ var copyNpmDependencies = function() {
 };
 
 var copyStaticFiles = function() {
-    return gulp.src(staticPath)
+    return gulp.src(staticPath, {base: 'src'})
     .pipe(gulp.dest('build'));
 }
 
 gulp.task('compileWebApp', compileWebApp);
+gulp.task('compileLib', compileLib);
 gulp.task('compileDevServer', compileDevServer);
 gulp.task('copyNpmDependencies', ['clear-dependencies'], copyNpmDependencies);
 gulp.task('copyStaticFiles', copyStaticFiles);
 gulp.task('compileSCSS', compileSCSS);
 gulp.task('build-compileWebApp', ['clean'], compileWebApp);
+gulp.task('build-compileLib', ['clean'], compileLib);
 gulp.task('build-compileDevServer', ['clean'], compileDevServer);
 gulp.task('build-copyNpmDependencies', ['clean'], copyNpmDependencies);
 gulp.task('build-copyStaticFiles', ['clean'], copyStaticFiles);
@@ -92,7 +103,7 @@ gulp.task('clean', function() {
   return del(['build/**/*', '!build']);
 });
 
-gulp.task('build', ['clean', 'build-compileSCSS', 'build-compileWebApp', 'build-compileDevServer', 'build-copyNpmDependencies', 'build-copyStaticFiles']); 
+gulp.task('build', ['clean', 'build-compileSCSS', 'build-compileLib', 'build-compileWebApp', 'build-compileDevServer', 'build-copyNpmDependencies', 'build-copyStaticFiles']); 
 
 gulp.task('default', ['watch']);
 

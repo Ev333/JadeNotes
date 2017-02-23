@@ -1,6 +1,6 @@
-import { Notebook } from '../lib/notebook';
-import { NotebookStub  } from '../lib/NotebookStub';
-import { Note  } from '../lib/Note';
+import { Notebook } from '../../lib/notebook';
+import { NotebookStub  } from '../../lib/NotebookStub';
+import { Note  } from '../../lib/Note';
 
 
 import {Injectable} from '@angular/core';

@@ -1,14 +1,11 @@
 // import { Express, Request, Router, Response, NextFunction } from 'express'
 
-
-
 import * as express from 'express';
+import * as path from 'path';
 
-import {NotebookStub} from '../notes/lib/NoteBookStub';
+import {NotebookStub} from '../lib/NoteBookStub';
 
-
-
-class DevServerCore {
+export class DevServerCore {
     private Notebooks : Array<NotebookStub>;
     
     constructor() {
@@ -20,13 +17,17 @@ class DevServerCore {
         var router = express.Router();
 
         router.get('/', this.home);
-        router.get('/notebooks/get', this.getNotebooks);
+        
+        router.get('/notebooks', this.getNotebooks);
+        router.put('/notebooks', this.putNotebooks);
+        router.patch('/notebooks/:id', this.patchNotebooks);
 
         return router;
     }
 
     public home(req,res,next) {
-        res.sendFile('./build/index.html');
+        var file = path.join(__dirname, 'build', 'index.html');
+        res.sendFile(file);
         next();
     }
 
@@ -42,6 +43,14 @@ class DevServerCore {
         notebooks.push( new NotebookStub( "Notebook3", "3", "Notebook3Path" ) );
         
         res.render( JSON.stringify(notebooks) );
+        next();
+    }
+
+    public putNotebooks(req,res,next) {
+        next();
+    }
+
+    public patchNotebooks(req,res,next) {
         next();
     }
 

@@ -6,8 +6,8 @@ import {Observable}               from 'rxjs/Observable';
 import {Observer}                 from 'rxjs/Observer';
 import 'rxjs/add/operator/map';
 
-import {Notebook}                 from '../lib/notebook';
-import {NotebookStub}             from '../lib/NotebookStub';
+import {Notebook}                 from '../../lib/notebook';
+import {NotebookStub}             from '../../lib/NotebookStub';
 
 @Component({
   selector: 'shelf',

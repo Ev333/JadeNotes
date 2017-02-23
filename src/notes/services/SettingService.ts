@@ -1,8 +1,5 @@
-/*
-///<reference path="../../lib/notebook" />
-*/
 
-import {NotebookStub} from '../lib/NotebookStub';
+import {NotebookStub} from '../../lib/NotebookStub';
 
 import {Injectable, NgZone}     from '@angular/core';
 //import {Http, Response} from 'angular2/http';

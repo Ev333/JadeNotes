@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
        "declaration": false,
-       "module": "amd",
+       "module": "umd",
        "moduleResolution": "node",
        "removeComments": false,
        "target": "ES6",
