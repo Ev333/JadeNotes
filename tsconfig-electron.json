@@ -7,12 +7,19 @@
        "emitDecoratorMetadata": true,
        "experimentalDecorators": true,
        "noImplicitAny": false,
-       "noEmitOnError": true
+       "noEmitOnError": true,
+      "baseUrl": "./src",
+      "paths": {
+          "jadenotes/webapp/*": ["notes/*"],
+          "jadenotes/lib/*": ["lib/*"],
+          "jadenotes/devserver/*": ["devserver/*"],
+          "jadenotes/electron-app/*": ["electron-app/*"]
+      }       
   },
   "exclude": [
-    "node_modules",
-    "bower_components",
-    "typings",
-    "build"
+    "node_modules/**/*",
+    "bower_components/**/*",
+    "ignore/**/*",
+    "build/**/*"
   ]
 }

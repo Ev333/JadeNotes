@@ -1,13 +1,13 @@
 import {Component, ChangeDetectorRef, OnInit}     from '@angular/core';
 
-import {SettingService}           from '../services/SettingService';
-
 import {Observable}               from 'rxjs/Observable';
 import {Observer}                 from 'rxjs/Observer';
 import 'rxjs/add/operator/map';
 
-import {Notebook}                 from '../../lib/notebook';
-import {NotebookStub}             from '../../lib/NotebookStub';
+
+import {SettingService}           from 'jadenotes/webapp/services/SettingServiceWeb';
+import {Notebook}                 from 'jadenotes/lib/notebook';
+import {NotebookStub}             from 'jadenotes/lib/NotebookStub';
 
 @Component({
   selector: 'shelf',

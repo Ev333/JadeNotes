@@ -1,21 +1,20 @@
-import {NotebookStub} from '../../lib/NotebookStub';
+// import {Injectable}     from '@angular/core';
 
-import {Injectable}     from '@angular/core';
-
-
+// import {NotebookStub} from 'jadenotes/lib/NotebookStub';
 
 
-@Injectable()
-export class StateService {
 
-  public currentState : StatesEnum;
+// @Injectable()
+// export class StateService {
 
-  public setState( newState : StatesEnum) {
-    this.currentState = newState;
-  }
-}
+//   public currentState : StatesEnum;
 
-export enum StatesEnum {
-  ShelfState,
-  HtmlEditorState
-}
+//   public setState( newState : StatesEnum) {
+//     this.currentState = newState;
+//   }
+// }
+
+// export enum StatesEnum {
+//   ShelfState,
+//   HtmlEditorState
+// }

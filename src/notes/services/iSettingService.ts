@@ -1,7 +1,4 @@
-import {NotebookStub} from '../../lib/NotebookStub';
-
-
-
+import {NotebookStub} from 'jadenotes/lib/NotebookStub';
 
 export interface iSettingService {
     CreateNewNotebook ( stub: NotebookStub );

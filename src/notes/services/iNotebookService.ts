@@ -1,5 +1,5 @@
-import {NotebookStub} from '../../lib/NotebookStub';
-import {Note} from '../../lib/Note';
+import {NotebookStub} from 'jadenotes/lib/NotebookStub';
+import {Note} from 'jadenotes/lib/Note';
 
 export interface iNotebookService {
     currentNotebook: NotebookStub;

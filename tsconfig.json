@@ -1,7 +1,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-      "module": "amd",
+      "module": "umd",
       "moduleResolution": "node",
       "removeComments": false,
       "target": "ES2015",
@@ -12,17 +12,18 @@
       "rootDir": "./src",
       "outDir": "./build",
       "typeRoots": ["./typings"],
-      "baseUrl": ".",
+      "baseUrl": "./src",
       "paths": {
-          "web-app": "./src/notes",
-          "electron-app": "./src/electron-app",
-          "*": "./node_modules/*"
+          "jadenotes/webapp/*": ["notes/*"],
+          "jadenotes/lib/*": ["lib/*"],
+          "jadenotes/devserver/*": ["devserver/*"],
+          "jadenotes/electron-app/*": ["electron-app/*"]
       }
   },
   "exclude": [
-    "node_modules",
-    "bower_components",
-    "typings",
-    "build"
+    "node_modules/**/*",
+    "bower_components/**/*",
+    "ignore/**/*",
+    "build/**/*"
   ]
 }

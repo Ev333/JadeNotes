@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
        "declaration": false,
-       "module": "amd",
+       "module": "umd",
        "moduleResolution": "node",
        "removeComments": false,
        "target": "ES6",
@@ -9,13 +9,24 @@
        "experimentalDecorators": true,
        "noImplicitAny": false,
        "noEmitOnError": true,
-       "lib": ["ES6", "DOM", "DOM.Iterable", "ScriptHost"]
+       "lib": ["ES6", "DOM", "DOM.Iterable", "ScriptHost"],
+       "baseUrl": "./src",
+        "paths": {
+          "jadenotes/webapp/*": ["./notes/*"],
+          "jadenotes/lib/*": ["./lib/*"],
+          "jadenotes/devserver/*": ["./devserver/*"],
+          "jadenotes/electron-app/*": ["./electron-app/*"]
+        }       
   },
+  "include": [
+    "./src/notes/**/*.ts",
+    "./src/lib/**/*.ts"
+  ],
   "exclude": [
-    "node_modules",
-    "bower_components",
-    "typings",
-    "build"
+    "node_modules/**/*",
+    "bower_components/**/*",
+    "ignore/**/*",
+    "build/**/*"
   ]
 }
 

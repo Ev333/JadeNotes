@@ -1,4 +1,4 @@
-import {NotebookStub} from '../NotebookStub';
+import {NotebookStub} from 'jadenotes/lib/NotebookStub';
 import {Observable} from 'rxjs/Observable';
 
 export interface iSettingsManager {

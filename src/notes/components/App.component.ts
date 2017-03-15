@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {UIRouter, trace, StateDeclaration} from 'ui-router-ng2';
 
-import {SettingService} from '../services/SettingService';
-import {NotebookService} from '../services/NotebookService';
+import {SettingService} from 'jadenotes/webapp/services/SettingServiceWeb';
+import {NotebookService} from 'jadenotes/webapp/services/NotebookService';
 
 @Component({
   selector: 'notes',

@@ -1,4 +1,4 @@
-import { NotebookStub } from './NotebookStub';
+import { NotebookStub } from 'jadenotes/lib/NotebookStub';
 
 module ElectronHandlers {
 
