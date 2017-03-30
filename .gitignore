@@ -1,15 +1,15 @@
-
-
 #build folders
 build
+dist
+.electron-gyp
 
 #common dependency directories
 bower_components
 node_modules
 jspm_packages
 typings
-.electron-gyp
-
 
 #editor settings
 .vscode
+
+yarn-error.log

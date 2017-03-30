@@ -4,12 +4,11 @@
        "module": "umd",
        "moduleResolution": "node",
        "removeComments": false,
-       "target": "ES6",
+       "target": "ES2015",
        "emitDecoratorMetadata": true,
        "experimentalDecorators": true,
        "noImplicitAny": false,
        "noEmitOnError": true,
-       "lib": ["ES6", "DOM", "DOM.Iterable", "ScriptHost"],
        "baseUrl": "./src",
         "paths": {
           "jadenotes/webapp/*": ["./notes/*"],
