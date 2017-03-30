@@ -1,48 +1,55 @@
-var express = require('express');
-var path = require('path');
-var server = express();
+// var system = require("systemjs");
+// system.config({
+// 	defaultJSExtensions: true,
+// 	map: {
+// 		lib: "build/lib"	
+// 	}
+// });
 
-var browserSync = require('browser-sync');
-var DevServerCoreModule = require('./build/devserver/DevServerCore');
+var port = 3333;
+var jnLib;
 
-var dsCore = new DevServerCoreModule.DevServerCore(__dirname);
+var express = require('express'),
+	server = express(),
+	router = require('./devserver.router'),
+	req = require('requirejs'),
+	path = require('path'),
+	webpack = require('webpack'),
+	webpackConfig = require('./webpack.config.dev.js'),
+	webpackCompiler = webpack(webpackConfig),
+	webpackDev = require('webpack-dev-middleware');
+	//broccoli = require('broccoli-middleware'),
+	//browserSync = require('browser-sync'),
+	//distPath = path.join(__dirname, dist);
+
+//import webpackConfig from './webpack-config.js';
+	//DevServerCoreModule = require('./build/devserver/DevServerCore'),
 
 
-server.use(express.static('build/notes'));
-server.use(express.static('build/dependencies'));
+try {
+	console.log(webpackConfig.output.publicPath);
+	server.use(webpackDev(
+		webpackCompiler, 
+		{ publicPath: webpackConfig.output.publicPath }
+	));
 
-server.get('/', function(req,res) { 
-	res.sendFile( path.join(__dirname, 'build', 'index.html') );
-});
-        
-server.get('/notebooks', function() { dsCore.getNotebooks() });
-server.put('/notebooks', function() { dsCore.putNotebooks() });
-server.patch('/notebooks/:id', function() { dsCore.patchNotebooks() });
+	server.get('/', function(req,res) { 
+		res.sendFile( path.join(__dirname, 'src', 'index.html') );
+	});
+	//server.use();
+}
+catch (err) {
+	console.log(err);
+}
 
 
-//server.use(dsCore.getRouter());
 
 server.listen({port:3333});
-console.log('listening on port 3333');
+	console.log('listening on port 3333');
 
-var bsConfig = require('./bs-config.js');
-browserSync.init(bsConfig);
-
-// browserSync.init({
-
-//     server: {
-//         routes: {
-//             "/": 'build/index.html'
-//         },
-
-//         middleware: [
-//             { route: '/notebooks', handle: getNotebooks },
-//             { route: '/notes', handle: getNotes }
-//         ]
-//     }
-
-// })
-
+function updateLib() {
+	jnLib = require(`http://localhost:${port}/jadenotes/lib/jnLib.js`);
+}
 
 
 
