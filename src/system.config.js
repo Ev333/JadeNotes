@@ -6,7 +6,6 @@
   var map = {
     'rxjs': 					'./dependencies/rxjs',
     '@angular': 			'./dependencies/@angular',
-		'ui-router-ng2': 	'./dependencies/ui-router-ng2/_bundles/ui-router-ng2.js',
 		'electron':				'./dependencies/electron/index.js'
   };
 

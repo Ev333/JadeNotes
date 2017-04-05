@@ -1,9 +1,9 @@
-import { NotebookStub } from 'jadenotes/lib/NotebookStub';
+//import { NotebookStub } from 'jadenotes/lib/NotebookStub';
 
-module ElectronHandlers {
+// module ElectronHandlers {
 
-  export function getNotebookStubs() : Array<NotebookStub> {
-    return new Array<NotebookStub>();
-  }
+//   export function getNotebookStubs() : Array<NotebookStub> {
+//     return new Array<NotebookStub>();
+//   }
 
-}
+// }

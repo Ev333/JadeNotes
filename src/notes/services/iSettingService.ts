@@ -1,8 +1,8 @@
-import {NotebookStub} from 'jadenotes/lib/NotebookStub';
+import {NotebookStub} from 'jadenotes/lib/Notebook';
 
 export interface iSettingService {
-    CreateNewNotebook ( stub: NotebookStub );
-    DeleteNotebook( title : string );
-    Destroy();
-    RefreshNotebooks();
+    CreateNotebook ( stub: NotebookStub );
+    DeleteNotebook( string : string );
+    GetNotebooks();
+    GetNotebooks( id : string);
 }

@@ -1,5 +1,5 @@
 import { Notebook } from 'jadenotes/lib/notebook';
-import { NotebookStub  } from 'jadenotes/lib/NotebookStub';
+import { NotebookStub  } from 'jadenotes/lib/Notebook';
 import { Note  } from 'jadenotes/lib/Note';
 
 

@@ -14,6 +14,8 @@ var express = require('express'),
 	router = require('./devserver.router'),
 	req = require('requirejs'),
 	path = require('path'),
+	gulp = require('gulp'),
+	gulpConfig = require('./gulpfile.js'),
 	webpack = require('webpack'),
 	webpackConfig = require('./webpack.config.dev.js'),
 	webpackCompiler = webpack(webpackConfig),
@@ -42,7 +44,8 @@ catch (err) {
 	console.log(err);
 }
 
-
+//run gulp tasks to make devserver has its dependencies
+gulp.series( gulp.parallel('BuildTsLib', 'BuildTsDevServer'), 'watch');
 
 server.listen({port:3333});
 	console.log('listening on port 3333');

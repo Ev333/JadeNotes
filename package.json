@@ -7,14 +7,14 @@
     "ecmaVersion": 6
   },
   "dependencies": {
-    "@angular/common": "^2.4.9",
-    "@angular/compiler": "^2.4.9",
-    "@angular/core": "^2.4.9",
-    "@angular/forms": "^2.4.9",
-    "@angular/http": "^2.4.9",
-    "@angular/platform-browser": "^2.4.9",
-    "@angular/platform-browser-dynamic": "^2.4.9",
-    "@angular/router": "^3.4.9",
+    "@angular/common": "^4.0.1",
+    "@angular/compiler": "^4.0.1",
+    "@angular/core": "^4.0.1",
+    "@angular/forms": "^4.0.1",
+    "@angular/http": "^4.0.1",
+    "@angular/platform-browser": "^4.0.1",
+    "@angular/platform-browser-dynamic": "^4.0.1",
+    "@angular/router": "^4.0.1",
     "core-js": "^2.4.1",
     "es6-shim": "^0.35.3",
     "express-session": "^1.13.0",
@@ -34,8 +34,7 @@
     "socket.io": "^1.4.5",
     "systemjs": "^0.19.46",
     "tinymce": "^4.5.3",
-    "ui-router-ng2": "^1.0.0-beta.2",
-    "zone.js": "^0.7.6"
+    "zone.js": "^0.8.4"
   },
   "devDependencies": {
     "@types/browser-sync": "0.0.34",

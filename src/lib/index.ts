@@ -1,6 +1,5 @@
 
-import { NotebookStub } from './NotebookStub';
-import { Notebook } from './notebook';
+import { NotebookStub, Notebook } from './notebook';
 import {Note, ContentType} from './note';
 
 var ns = new NotebookStub( "", "", "");

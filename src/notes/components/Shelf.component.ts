@@ -6,8 +6,7 @@ import 'rxjs/add/operator/map';
 
 
 import {SettingService}           from 'jadenotes/webapp/services/SettingServiceWeb';
-import {Notebook}                 from 'jadenotes/lib/notebook';
-import {NotebookStub}             from 'jadenotes/lib/NotebookStub';
+import {Notebook, NotebookStub}                 from 'jadenotes/lib/notebook';
 
 @Component({
   selector: 'shelf',
@@ -48,7 +47,7 @@ import {NotebookStub}             from 'jadenotes/lib/NotebookStub';
 })
 export class ShelfComponent implements OnInit {
 
-  public notebooks$ : Observable<NotebookStub[]>;
+  public notebookObservable : Observable<NotebookStub[]>;
 
   //model for creating new notebooks
   public createMode : boolean = false;
@@ -70,15 +69,15 @@ export class ShelfComponent implements OnInit {
   ngOnInit() {
     console.log('ShelfComponent: ngOnInit');
 
-    this.notebooks$ = this.svcSettings.notebooks$;
+    this.notebookObservable = this.svcSettings.notebookObservable;
 
-    this.svcSettings.notebooks$.subscribe(
+    this.svcSettings.notebookObservable.subscribe(
       data => {
         if (!this.hasNotebooks) this.hasNotebooks = true;
       }
     );
 
-    this.svcSettings.RefreshNotebooks();
+    this.svcSettings.GetNotebooks();
   }
 
   ngAfterViewInit() {
@@ -91,15 +90,15 @@ export class ShelfComponent implements OnInit {
   }
 
   public createNotebook(e) {
-    console.log(e);
+    //console.log(e);
     //e.preventDefault();
     console.log(`creating notebook`);
-    this.svcSettings.CreateNewNotebook( this.notebookModel );
+    this.svcSettings.CreateNotebook( this.notebookModel );
   }
 
-  public deleteNotebook(title) {
-    console.log('deleting notebook: ' + title);
-    this.svcSettings.DeleteNotebook(title);
+  public deleteNotebook(id) {
+    console.log('deleting notebook: ' + id);
+    this.svcSettings.DeleteNotebook(id);
   }
 
 }
