@@ -1,4 +1,4 @@
-import {NotebookStub} from 'lib/Notebook';
+import {NotebookStub} from 'lib/notebook';
 
 export interface iSettingService {
     CreateNotebook ( stub: NotebookStub );

@@ -1,5 +1,5 @@
 import { Notebook } from 'lib/notebook';
-import { NotebookStub  } from 'lib/Notebook';
+import { NotebookStub  } from 'lib/notebook';
 import { Note  } from 'lib/Note';
 
 

@@ -1,4 +1,4 @@
-import {NotebookStub} from 'lib/Notebook';
+import {NotebookStub} from 'lib/notebook';
 import {Note} from 'lib/Note';
 
 export interface iNotebookService {

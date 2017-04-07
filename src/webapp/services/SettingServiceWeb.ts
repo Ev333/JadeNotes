@@ -1,6 +1,6 @@
 
 import {iSettingService} 		from 'webapp/services/iSettingService';
-import {NotebookStub} 			from 'lib/Notebook';
+import {NotebookStub} 			from 'lib/notebook';
 
 import {Injectable, NgZone}     from '@angular/core';
 import {Jsonp} 					from '@angular/http';
