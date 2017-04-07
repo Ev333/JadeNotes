@@ -1,5 +1,5 @@
 
-// import {NotebookStub}           from 'lib/NotebookStub';
+// import {NotebookStub}           from 'lib/notebookStub';
 
 // import {Injectable, NgZone}     from '@angular/core';
 // import {Observable}             from 'rxjs/Observable';

@@ -1,4 +1,4 @@
-//import { NotebookStub } from 'lib/NotebookStub';
+//import { NotebookStub } from 'lib/notebook';
 
 // module ElectronHandlers {
 
