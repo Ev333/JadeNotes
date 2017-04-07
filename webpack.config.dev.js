@@ -1,7 +1,9 @@
 var path = require('path'),
     copy = require('copy-webpack-plugin'),
+    TsConfigPathsPlugin = require('awesome-typescript-loader').TsConfigPathsPlugin,
     ExtractTextPlugin = require('extract-text-webpack-plugin');
     
+
 // var extractSass = new ExtractText({
 //   disable: process.env.NODE_ENV === "development",
 //   filename: "style.css",
@@ -16,17 +18,21 @@ const extractSass = new ExtractTextPlugin('style.css');
 module.exports = {
   context: __dirname,
   entry: {
-    "styles": './src/styles/style.scss',
+    "styles": './src/webapp/styles/style.scss',
     //"lib": './src/lib/index.ts',
-    "webapp": './src/notes/main.ts'
+    "webapp": './src/webapp/main.ts'
   },
   output: {
 			publicPath: publicPath,
 			filename: "[name].js",
-			sourceMapFilename: "[file].map",
+			//sourceMapFilename: "[file].map",
 			path: '/'
   },
   resolve: {
+    modules: ["src", "node_modules"],
+    plugins: [
+      new TsConfigPathsPlugin('./tsconfig.json'),
+    ],
     extensions: [".tsx", ".ts", ".js", 'scss', 'css'] //, "scss", "css"
   },
   module: {
@@ -43,14 +49,14 @@ module.exports = {
         
       },
       { test: /fontawesome-webfont.(eot|ttf|svg|woff|woff2)/, loader: 'file-loader', options:{ name: 'fonts/[name].[hash].[ext]', flatten:true } },
-      { test: /\.tsx?$/, loader: 'ts-loader', options: { configFileName: 'tsconfig-webapp.json' } }
+      { test: /\.tsx?$/, loader: 'awesome-typescript-loader', exclude: /electron-app/ }
     ]
   },
   plugins: [
-    // new copy([
-		// 		{ from: 'src/notes/images/*', to: 'images', flatten:true }
-		// 	]),
-    extractSass
+    new copy([
+				{ from: 'src/notes/images/*', to: 'images', flatten:true }
+			]),    
+    extractSass    
   ]
 }
 
