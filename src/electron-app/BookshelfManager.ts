@@ -8,7 +8,7 @@ import * as graph from 'levelgraph';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as mkdirp from 'mkdirp';
-import * as leveldown from 'leveldown';
+//import * as leveldown from 'leveldown';
 
 // const level = require('levelup');
 // const sublevel = require('level-sublevel');
