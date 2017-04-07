@@ -4,7 +4,7 @@ import * as express from 'express';
 import * as path from 'path';
 
 
-import {NotebookStub} from 'jadenotes/lib/notebook';
+import {NotebookStub} from 'lib/notebook';
 
 export class DevServerCore {
     private notebooks : NotebookStub[];

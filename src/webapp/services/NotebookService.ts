@@ -1,6 +1,6 @@
-import { Notebook } from 'jadenotes/lib/notebook';
-import { NotebookStub  } from 'jadenotes/lib/Notebook';
-import { Note  } from 'jadenotes/lib/Note';
+import { Notebook } from 'lib/notebook';
+import { NotebookStub  } from 'lib/Notebook';
+import { Note  } from 'lib/Note';
 
 
 import {Injectable} from '@angular/core';

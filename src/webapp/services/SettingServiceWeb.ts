@@ -1,6 +1,6 @@
 
-import {iSettingService} 		from 'jadenotes/webapp/services/iSettingService';
-import {NotebookStub} 			from 'jadenotes/lib/Notebook';
+import {iSettingService} 		from 'webapp/services/iSettingService';
+import {NotebookStub} 			from 'lib/Notebook';
 
 import {Injectable, NgZone}     from '@angular/core';
 import {Jsonp} 					from '@angular/http';

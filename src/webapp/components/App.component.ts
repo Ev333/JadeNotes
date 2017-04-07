@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 
-import {SettingService} from 'jadenotes/webapp/services/SettingServiceWeb';
-import {NotebookService} from 'jadenotes/webapp/services/NotebookService';
+import {SettingService} from 'webapp/services/SettingServiceWeb';
+import {NotebookService} from 'webapp/services/NotebookService';
 
 @Component({
   selector: 'notes',

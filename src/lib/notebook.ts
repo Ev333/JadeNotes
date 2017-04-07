@@ -1,4 +1,4 @@
-import { Note, ContentType } from 'jadenotes/lib/note'
+import { Note, ContentType } from 'lib/note'
 
 export class Notebook {
 

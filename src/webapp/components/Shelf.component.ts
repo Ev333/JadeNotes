@@ -5,8 +5,8 @@ import {Observer}                 from 'rxjs/Observer';
 import 'rxjs/add/operator/map';
 
 
-import {SettingService}           from 'jadenotes/webapp/services/SettingServiceWeb';
-import {Notebook, NotebookStub}                 from 'jadenotes/lib/notebook';
+import {SettingService}           from 'webapp/services/SettingServiceWeb';
+import {Notebook, NotebookStub}                 from 'lib/notebook';
 
 @Component({
   selector: 'shelf',

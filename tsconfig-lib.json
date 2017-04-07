@@ -10,12 +10,12 @@
        "noImplicitAny": false,
        "noEmitOnError": true,
        "lib": ["ES6", "DOM", "DOM.Iterable", "ScriptHost"],
-      "baseUrl": "./src",
+      "baseUrl": ".",
       "paths": {
-          "jadenotes/webapp/*": ["notes/*"],
-          "jadenotes/lib/*": ["lib/*"],
-          "jadenotes/devserver/*": ["devserver/*"],
-          "jadenotes/electron-app/*": ["electron-app/*"]
+          "webapp/*": ["src/webapp/*"],
+          "lib/*": ["src/lib/*"],
+          "devserver/*": ["src/devserver/*"],
+          "electron-app/*": ["src/electron-app/*"]
       }
   },
   "exclude": [

@@ -1,5 +1,5 @@
 
-// import {NotebookStub}           from 'jadenotes/lib/NotebookStub';
+// import {NotebookStub}           from 'lib/NotebookStub';
 
 // import {Injectable, NgZone}     from '@angular/core';
 // import {Observable}             from 'rxjs/Observable';

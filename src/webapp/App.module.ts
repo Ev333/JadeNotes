@@ -4,11 +4,11 @@ import { FormsModule }   from '@angular/forms';
 import { CommonModule }  from '@angular/common';
 import { RouterModule }  from '@angular/router';
 
-import { AppComponent }				from 'jadenotes/webapp/components/App.component';
-import { ErrorComponent } 			from 'jadenotes/webapp/components/Error.component';
-import { ShelfComponent } 			from 'jadenotes/webapp/components/Shelf.component';
-import { NotebookHomeComponent } 	from 'jadenotes/webapp/components/NotebookHome.component';
-import { SettingService } 			from 'jadenotes/webapp/services/SettingServiceWeb';
+import { AppComponent }				from 'webapp/components/App.component';
+import { ErrorComponent } 			from 'webapp/components/Error.component';
+import { ShelfComponent } 			from 'webapp/components/Shelf.component';
+import { NotebookHomeComponent } 	from 'webapp/components/NotebookHome.component';
+import { SettingService } 			from 'webapp/services/SettingServiceWeb';
 
 var routes = [
 	{ path: "/", component: ShelfComponent },

@@ -1,22 +1,21 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-      "module": "umd",
+      "target": "es2015",
+      "module": "es2015",
       "moduleResolution": "node",
       "removeComments": false,
-      "target": "ES2015",
       "emitDecoratorMetadata": true,
       "experimentalDecorators": true,
-      "noImplicitAny": false,
       "noEmitOnError": true,
-      "rootDir": "./src",
-      "outDir": "./build",
-      "baseUrl": "./src",
+      "allowJs": true,
+      "rootDir": ".",
+      "baseUrl": ".",
       "paths": {
-          "jadenotes/webapp/*": ["notes/*"],
-          "jadenotes/lib/*": ["lib/*"],
-          "jadenotes/devserver/*": ["devserver/*"],
-          "jadenotes/electron-app/*": ["electron-app/*"]
+          "webapp/*": ["src/webapp/*"],
+          "lib/*": ["src/lib/*"],
+          "devserver/*": ["src/devserver/*"],
+          "electron-app/*": ["src/electron-app/*"]
       }
   },
   "exclude": [

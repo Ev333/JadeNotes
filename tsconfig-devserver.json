@@ -9,9 +9,9 @@
       "experimentalDecorators": true,
       "noImplicitAny": false,
       "noEmitOnError": true,
-      "baseUrl": "./src",
+      "baseUrl": ".",
       "paths": {
-          "jadenotes/webapp/*": ["notes/*"],
+          "webapp/*": ["src/webapp/*"],
           "jadenotes/lib/*": ["lib/*"],
           "jadenotes/devserver/*": ["devserver/*"],
           "jadenotes/electron-app/*": ["electron-app/*"]
