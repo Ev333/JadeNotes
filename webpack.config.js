@@ -41,7 +41,10 @@ module.exports = {
   },
   plugins: [
     new copy([
-				{ from: 'src/notes/images/*', to: 'images', flatten:true }
+				{ from: 'src/notes/images/*', to: 'images', flatten:true },
+        { from: 'node_modules/zone.js/dist/zone.js', to: 'dependencies', flatten:true },
+        { from: 'node_modules/reflect-metadata/Reflect.js', to: 'dependencies', flatten:true },
+        { from: 'node_modules/es6-shim/es6-shim.js', to: 'dependencies', flatten:true }
 			]),
     extractSass
   ]

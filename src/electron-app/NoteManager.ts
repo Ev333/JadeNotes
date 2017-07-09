@@ -1,5 +1,5 @@
-import { Note } from 'lib/note';
-import { Notebook } from 'lib/notebook';
+import { Note } from 'lib/Note';
+import { Notebook } from 'lib/Notebook';
 
 export interface INoteManager {
     

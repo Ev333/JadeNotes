@@ -1,14 +1,15 @@
 import {Component, OnInit} from '@angular/core';
 
+import { UIView } from '@uirouter/angular'
+
 import {SettingService} from 'webapp/services/SettingServiceWeb';
 import {NotebookService} from 'webapp/services/NotebookService';
 
 @Component({
   selector: 'notes',
-	//providers: [SettingService, NotebookService],
   template: `
     <main id="AppContent">
-      <router-outlet></router-outlet>
+      <ui-view></ui-view>
     </main>
   `
 })

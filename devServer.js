@@ -20,13 +20,6 @@ var express = require('express'),
 	webpackConfig = require('./webpack.config.dev.js'),
 	webpackCompiler = webpack(webpackConfig),
 	webpackDev = require('webpack-dev-middleware');
-	//broccoli = require('broccoli-middleware'),
-	//browserSync = require('browser-sync'),
-	//distPath = path.join(__dirname, dist);
-
-//import webpackConfig from './webpack-config.js';
-	//DevServerCoreModule = require('./build/devserver/DevServerCore'),
-
 
 try {
 	console.log(webpackConfig.output.publicPath);
@@ -38,14 +31,14 @@ try {
 	server.get('/', function(req,res) { 
 		res.sendFile( path.join(__dirname, 'src', 'index.html') );
 	});
-	//server.use();
+	server.use(router);
 }
 catch (err) {
 	console.log(err);
 }
 
 //run gulp tasks to make devserver has its dependencies
-gulp.series( gulp.parallel('BuildTsLib', 'BuildTsDevServer'), 'watch');
+//gulp.series( gulp.parallel('BuildTsLib', 'BuildTsDevServer'), 'watch');
 
 server.listen({port:3333});
 	console.log('listening on port 3333');

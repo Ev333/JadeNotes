@@ -1,4 +1,4 @@
-import {NotebookStub} from 'lib/notebook';
+import {NotebookStub} from 'lib/Notebook';
 import {Observable} from 'rxjs/Observable';
 
 export interface iSettingsManager {

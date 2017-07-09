@@ -1,4 +1,4 @@
-import { Note, ContentType } from 'lib/note'
+import { Note, ContentType } from 'lib/Note'
 
 export class Notebook {
 

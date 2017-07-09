@@ -1,81 +1,70 @@
 
 import {iSettingService} 		from 'webapp/services/iSettingService';
-import {NotebookStub} 			from 'lib/notebook';
+import {NotebookStub} 			from 'lib/Notebook';
 
-import {Injectable, NgZone}     from '@angular/core';
-import {Jsonp} 					from '@angular/http';
+import {Injectable, NgZone, OnInit}     from '@angular/core';
+import {Http} 					from '@angular/http';
 import {Observable}     		from 'rxjs/Observable';
 import {Observer}     			from 'rxjs/Observer';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
-
+//import 'rxjs/add/observable/just';
 
 @Injectable()
-export class SettingService implements iSettingService {
-	private _jsonp : Jsonp;
-
-	constructor(jsonpDep : Jsonp ) {
-		this._jsonp = jsonpDep;
-	}
+export class SettingService implements iSettingService, OnInit {
 
 	public notebooks : NotebookStub[];
+	public notebooks$ : Observable<NotebookStub[]>;
+	// private notebookObserver : Observer<NotebookStub[]>;
 
-	public notebookObservable : Observable<NotebookStub[]>;
-	private notebookObserver : Observer<NotebookStub[]>;
+	constructor(private http : Http ) {
+		this.notebooks = new Array<NotebookStub>();
+
+		this.GetNotebooks();
+	}
+
+	ngOnInit() {
+		this.notebooks$.subscribe( 
+			value => { this.notebooks = value; },
+			error => { console.log(error) },
+			() => {console.log('complete')}  
+		);
+		
+		// this.notebookObservable = Observable.just( )
+		// this.notebookObservable = Observable.from(this.notebooks) as Observable<NotebookStub[]>;
+	}
 
 	private cnn = {
 		protocol: 'http',
-		host: 'localhost'
+		host: 'localhost',
+		port: 3333
 	}
 
 	//private ProtocolType : enum { http, https }
 
 	//import url from json
 
-	private url = `${this.cnn.protocol}${this.cnn.host}//Settings//Notebooks`
+	private url = `${this.cnn.protocol}://${this.cnn.host}:${this.cnn.port}/api/Notebooks`;
 
-	public CreateNotebook ( stub: NotebookStub ) {
-		let url = `${this.cnn.protocol}://${this.cnn.host}/Settings/Notebooks`;
-		this._jsonp.post(url, NotebookStub)
+	public CreateNotebook  ( stub: NotebookStub ) {
+		this.http.post(this.url, NotebookStub)
 			.toPromise()
-			.then( () => {
-				this.GetNotebooks();
-			});
+			.then( () => { this.GetNotebooks() } );
 	}
 
     public DeleteNotebook( argId ) {
-		let url = `${this.cnn.protocol}://${this.cnn.host}/Settings/Notebook`;
-		this._jsonp.delete(url, [{ id: argId }])
+		this.http.delete(this.url, [{ id: argId }])
 			.toPromise()
-			.then( () => {
-				this.GetNotebooks();	
-			})
-			.catch( (err) => console.log(err) );
+			.then( () => { this.GetNotebooks() } );				
 	}
-	
-
-	// private fetchAll(url) : Observable<NotebookStub[]>
-	// {
-	// 	return this._jsonp.get(url)
-	// 		.map( (res) => { res.json().data as NotebookStub[] });
-
-	// }
-	
+		
     public GetNotebooks() {
-		let url = `${this.cnn.protocol}://${this.cnn.host}/Settings/Notebooks`;
-		this._jsonp.get(url)
-			.map( (res) => {
-				this.notebooks.length = 0;
-				let data : NotebookStub[] = res.json().data as NotebookStub[];
-				data.forEach( (val) => {
-					this.notebooks.push(val);
-				});
-			});
+		console.log('SettingServiceWeb.getNotebooks');
+		this.notebooks$ = this.http.get(this.url)
+			.map( (res) => { return res.json(); });
 	}	
 
 	public GetNotebook(argId : string) {
-		let url = `${this.cnn.protocol}://${this.cnn.host}/Settings/Notebooks`;
-		this._jsonp.get(url, [{id: argId}]);
+		//this.http.get(url, [{id: argId}]);
 	}
-
 }

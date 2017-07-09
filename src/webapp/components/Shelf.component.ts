@@ -2,11 +2,12 @@ import {Component, ChangeDetectorRef, OnInit}     from '@angular/core';
 
 import {Observable}               from 'rxjs/Observable';
 import {Observer}                 from 'rxjs/Observer';
-import 'rxjs/add/operator/map';
-
+// import 'rxjs/add/operator/map';
+// import 'rxjs/add/observable/from';
+// import 'rxjs/add/observable/create';
 
 import {SettingService}           from 'webapp/services/SettingServiceWeb';
-import {Notebook, NotebookStub}                 from 'lib/notebook';
+import {Notebook, NotebookStub}   from 'lib/Notebook';
 
 @Component({
   selector: 'shelf',
@@ -34,7 +35,7 @@ import {Notebook, NotebookStub}                 from 'lib/notebook';
       <tr>
         <th>Title</th>
       </tr>
-      <tr *ngFor="let nb of notebooks$ | async">
+      <tr *ngFor="let nb of svcSettings.notebooks$ | async">
         <td>
           <a uiSref="notebookHome" [uiParams]="{id: nb.id}">{{nb.title}}</a><br/>
           <span>{{nb.path}}</span>        
@@ -47,7 +48,8 @@ import {Notebook, NotebookStub}                 from 'lib/notebook';
 })
 export class ShelfComponent implements OnInit {
 
-  public notebookObservable : Observable<NotebookStub[]>;
+  // public notebookObservable : Observable<NotebookStub[]>;
+  // public notebookObserver : Observer<NotebookStub[]>;
 
   //model for creating new notebooks
   public createMode : boolean = false;
@@ -69,15 +71,19 @@ export class ShelfComponent implements OnInit {
   ngOnInit() {
     console.log('ShelfComponent: ngOnInit');
 
-    this.notebookObservable = this.svcSettings.notebookObservable;
+    // this.svcSettings.notebooks$.subscribe(
+    //   value => { console.log(value) },
+    //   error => { console.log(error) },
+    //   () => { console.log('complete') }
+    //  )
 
-    this.svcSettings.notebookObservable.subscribe(
-      data => {
-        if (!this.hasNotebooks) this.hasNotebooks = true;
-      }
-    );
+    // this.svcSettings.notebookObservable.subscribe(
+    //   data => {
+    //     if (!this.hasNotebooks) this.hasNotebooks = true;
+    //   }
+    // );
 
-    this.svcSettings.GetNotebooks();
+    //this.svcSettings.GetNotebooks();
   }
 
   ngAfterViewInit() {
